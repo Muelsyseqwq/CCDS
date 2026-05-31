@@ -1,0 +1,21 @@
+image_path,label,class_index,class_name,original_split
+/root/clip_diffusion_fewshot_ccds/data/raw/flowers-102/jpg/image_06773.jpg,0,0,pink primrose,val
+/root/clip_diffusion_fewshot_ccds/data/raw/flowers-102/jpg/image_06767.jpg,0,0,pink primrose,val
+/root/clip_diffusion_fewshot_ccds/data/raw/flowers-102/jpg/image_06739.jpg,0,0,pink primrose,val
+/root/clip_diffusion_fewshot_ccds/data/raw/flowers-102/jpg/image_06749.jpg,0,0,pink primrose,val
+/root/clip_diffusion_fewshot_ccds/data/raw/flowers-102/jpg/image_06763.jpg,0,0,pink primrose,val
+/root/clip_diffusion_fewshot_ccds/data/raw/flowers-102/jpg/image_06740.jpg,0,0,pink primrose,val
+/root/clip_diffusion_fewshot_ccds/data/raw/flowers-102/jpg/image_06761.jpg,0,0,pink primrose,val
+/root/clip_diffusion_fewshot_ccds/data/raw/flowers-102/jpg/image_06747.jpg,0,0,pink primrose,val
+/root/clip_diffusion_fewshot_ccds/data/raw/flowers-102/jpg/image_06738.jpg,0,0,pink primrose,val
+/root/clip_diffusion_fewshot_ccds/data/raw/flowers-102/jpg/image_06754.jpg,0,0,pink primrose,val
+/root/clip_diffusion_fewshot_ccds/data/raw/flowers-102/jpg/image_05138.jpg,1,1,hard-leaved pocket orchid,val
+/root/clip_diffusion_fewshot_ccds/data/raw/flowers-102/jpg/image_05101.jpg,1,1,hard-leaved pocket orchid,val
+/root/clip_diffusion_fewshot_ccds/data/raw/flowers-102/jpg/image_05114.jpg,1,1,hard-leaved pocket orchid,val
+/root/clip_diffusion_fewshot_ccds/data/raw/flowers-102/jpg/image_05100.jpg,1,1,hard-leaved pocket orchid,val
+/root/clip_diffusion_fewshot_ccds/data/raw/flowers-102/jpg/image_05123.jpg,1,1,hard-leaved pocket orchid,val
+/root/clip_diffusion_fewshot_ccds/data/raw/flowers-102/jpg/image_05120.jpg,1,1,hard-leaved pocket orchid,val
+/root/clip_diffusion_fewshot_ccds/data/raw/flowers-102/jpg/image_05118.jpg,1,1,hard-leaved pocket orchid,val
+/root/clip_diffusion_fewshot_ccds/data/raw/flowers-102/jpg/image_05116.jpg,1,1,hard-leaved pocket orchid,val
+/root/clip_diffusion_fewshot_ccds/data/raw/flowers-102/jpg/image_05132.jpg,1,1,hard-leaved pocket orchid,val
+/root/clip_diffusion_fewshot_ccds/data/raw/flowers-102/jpg/image_05104.jpg,1,1,hard-leaved pocket orchid,val

@@ -1,0 +1,52 @@
+project_name: ccds_flowers20_5shot
+seed_list: [0, 1, 2]
+
+dataset:
+  name: flowers102
+  root: data/raw
+  num_classes: 20
+  shot: 5
+  image_size: 224
+  # 如果 class_indices 为空，脚本会默认选择前 num_classes 个类别。
+  class_indices: []
+
+generation:
+  model_id: runwayml/stable-diffusion-v1-5
+  output_dir: generated/flowers20_sd15
+  num_candidates_per_class: 80
+  image_size: 512
+  num_inference_steps: 30
+  guidance_scale: 7.5
+  batch_size: 1
+  dtype: float16
+  prompts:
+    - "a high-quality photo of a {class_name} flower"
+    - "a close-up photo of a {class_name} flower"
+    - "a realistic photo of a {class_name} flower"
+    - "a detailed photo of a {class_name} flower in natural light"
+  negative_prompt: "low quality, blurry, distorted, unrealistic, text, watermark, multiple objects"
+
+clip:
+  model_name: ViT-B-32
+  pretrained: openai
+  batch_size: 32
+
+selection:
+  selected_per_class: 10
+  top_m_for_diversity: 30
+  strategies:
+    - random
+    - clip_topk
+    - margin_topk
+    - ccds
+
+classifier:
+  backbone: resnet50
+  pretrained: true
+  freeze_backbone: true
+  epochs: 30
+  batch_size: 32
+  lr: 0.001
+  weight_decay: 0.0001
+  num_workers: 4
+  output_dir: results/classifier

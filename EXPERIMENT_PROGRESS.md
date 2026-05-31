@@ -1,0 +1,395 @@
+# CCDS 小规模真实生成实验进度记录
+
+日期：2026-05-31
+
+## 目标
+
+在当前 CCDS 项目中完成一次小规模真实 Stable Diffusion 生成链路验证：
+
+1. 确认 Hugging Face / Stable Diffusion 权重缓存可用。
+2. 生成 Oxford Flowers20 任务的少量真实扩散候选图。
+3. 用 CLIP 对生成图打分并保存图像 embedding。
+4. 运行全部候选选择策略。
+5. 验证关键产物是否存在、行数是否符合预期、图片路径是否有效。
+
+默认实验配置：
+
+```bash
+configs/flowers20_5shot.yaml
+```
+
+本次生成规模：
+
+```text
+20 类 × 每类 2 张 = 40 张生成图
+```
+
+## 环境与权限设置
+
+### Hugging Face 缓存迁移
+
+为避免系统盘空间不足，已将 Hugging Face 缓存迁移到数据盘：
+
+```text
+/root/.cache/huggingface -> /root/gpufree-data/cache/huggingface
+```
+
+迁移后检查结果：
+
+```text
+/root              30G 总量，约 19G 可用
+/root/gpufree-data 49G 总量，约 40G 可用
+```
+
+旧备份 `/root/.cache/huggingface.rootbak` 已在确认软链接和缓存可读后删除，释放系统盘空间。
+
+### Claude Code 项目权限偏好
+
+用户授权：当前项目中除删除类命令外，其它命令可直接执行。已在项目本地设置中尽量减少 Bash 权限提示，同时显式 deny 删除类命令，例如：
+
+```text
+rm
+rmdir
+unlink
+shred
+find ... -delete
+```
+
+后续删除/清空/不可逆移除类操作仍需人工确认。
+
+## 已完成步骤
+
+### 1. Stable Diffusion v1.5 权重下载与加载
+
+最初直接运行生成脚本时，`StableDiffusionPipeline.from_pretrained(...)` 在下载 SD1.5 权重阶段超时，主要问题是 Hugging Face / 镜像连接中断或 Xet/CAS 路径不稳定。
+
+采用的环境变量：
+
+```bash
+HF_ENDPOINT=https://hf-mirror.com
+HF_HUB_DISABLE_XET=1
+HF_HUB_DOWNLOAD_TIMEOUT=600
+```
+
+预下载命令曾运行到约 `21/36` 后失败，错误为远端连接中途断开：
+
+```text
+httpx.RemoteProtocolError: peer closed connection without sending complete message body
+```
+
+随后改为直接测试 pipeline 加载：
+
+```bash
+cd /root/clip_diffusion_fewshot_ccds
+HF_ENDPOINT=https://hf-mirror.com \
+HF_HUB_DISABLE_XET=1 \
+HF_HUB_DOWNLOAD_TIMEOUT=600 \
+PYTHONPATH=/root/clip_diffusion_fewshot_ccds/src \
+/root/clip_diffusion_fewshot_ccds/.venv/bin/python - <<'PY'
+import torch
+from diffusers import StableDiffusionPipeline
+print('cuda_available=', torch.cuda.is_available())
+pipe = StableDiffusionPipeline.from_pretrained(
+    'runwayml/stable-diffusion-v1-5',
+    torch_dtype=torch.float16,
+    safety_checker=None,
+    requires_safety_checker=False,
+)
+print('loaded ok')
+print('components=', sorted(pipe.components.keys()))
+PY
+```
+
+结果：
+
+```text
+cuda_available= True
+Fetching 13 files: 100%
+Loading pipeline components: 100%
+loaded ok
+components= ['feature_extractor', 'image_encoder', 'safety_checker', 'scheduler', 'text_encoder', 'tokenizer', 'unet', 'vae']
+```
+
+结论：SD1.5 已可从本地缓存成功加载。
+
+### 2. 生成 20 类小规模真实扩散候选图
+
+运行命令：
+
+```bash
+cd /root/clip_diffusion_fewshot_ccds
+HF_ENDPOINT=https://hf-mirror.com \
+HF_HUB_DISABLE_XET=1 \
+HF_HUB_DOWNLOAD_TIMEOUT=600 \
+PYTHONPATH=/root/clip_diffusion_fewshot_ccds/src \
+/root/clip_diffusion_fewshot_ccds/.venv/bin/python \
+/root/clip_diffusion_fewshot_ccds/scripts/generate_candidates.py \
+  --config /root/clip_diffusion_fewshot_ccds/configs/flowers20_5shot.yaml \
+  --limit-per-class 2
+```
+
+运行结果：
+
+```text
+Generating classes: 100%|██████████| 20/20
+Wrote metadata to /root/clip_diffusion_fewshot_ccds/results/ccds_flowers20_5shot/generation_metadata.csv
+```
+
+产物验证：
+
+```text
+image_count=40
+class_dirs=20
+metadata_lines=41
+rows=40
+labels=20
+per_label_min=2
+per_label_max=2
+missing_paths=0
+```
+
+关键产物：
+
+```text
+/root/clip_diffusion_fewshot_ccds/generated/flowers20_sd15/
+/root/clip_diffusion_fewshot_ccds/results/ccds_flowers20_5shot/generation_metadata.csv
+```
+
+metadata 字段：
+
+```text
+image_path,class_name,label,prompt,seed,model,guidance_scale,num_steps,config_fingerprint,reused_existing
+```
+
+### 3. CLIP 打分
+
+运行命令：
+
+```bash
+cd /root/clip_diffusion_fewshot_ccds
+HF_ENDPOINT=https://hf-mirror.com \
+HF_HUB_DISABLE_XET=1 \
+HF_HUB_DOWNLOAD_TIMEOUT=600 \
+PYTHONPATH=/root/clip_diffusion_fewshot_ccds/src \
+/root/clip_diffusion_fewshot_ccds/.venv/bin/python \
+/root/clip_diffusion_fewshot_ccds/scripts/score_candidates.py \
+  --config /root/clip_diffusion_fewshot_ccds/configs/flowers20_5shot.yaml
+```
+
+运行结果：
+
+```text
+CLIP scoring: 100%|██████████| 2/2
+Wrote scores to /root/clip_diffusion_fewshot_ccds/results/ccds_flowers20_5shot/clip_scores.csv
+Wrote embeddings to /root/clip_diffusion_fewshot_ccds/results/ccds_flowers20_5shot/clip_image_embeddings.npz
+```
+
+产物验证：
+
+```text
+score_rows=40
+missing_paths=0
+embedding_count=40
+embedding_shape=(512,)
+target_score_mean=0.3125135987997055
+margin_score_mean=0.013375889137387265
+```
+
+关键产物：
+
+```text
+/root/clip_diffusion_fewshot_ccds/results/ccds_flowers20_5shot/clip_scores.csv
+/root/clip_diffusion_fewshot_ccds/results/ccds_flowers20_5shot/clip_image_embeddings.npz
+```
+
+`clip_scores.csv` 字段：
+
+```text
+image_path,target_class,target_label,target_score,max_confuser_class,confuser_label,confuser_score,margin_score,prompt,seed
+```
+
+注意：本次 `score_candidates.py` 运行没有生成预期的 `results/ccds_flowers20_5shot/figures/score_distributions.png`，但核心打分 CSV 和 embedding NPZ 均正常，足以支持后续选择。
+
+### 4. 运行全部候选选择策略
+
+运行命令：
+
+```bash
+cd /root/clip_diffusion_fewshot_ccds
+HF_ENDPOINT=https://hf-mirror.com \
+HF_HUB_DISABLE_XET=1 \
+HF_HUB_DOWNLOAD_TIMEOUT=600 \
+PYTHONPATH=/root/clip_diffusion_fewshot_ccds/src \
+/root/clip_diffusion_fewshot_ccds/.venv/bin/python \
+/root/clip_diffusion_fewshot_ccds/scripts/select_candidates.py \
+  --config /root/clip_diffusion_fewshot_ccds/configs/flowers20_5shot.yaml \
+  --strategy all
+```
+
+运行结果：
+
+```text
+Wrote 40 selected samples to /root/clip_diffusion_fewshot_ccds/results/ccds_flowers20_5shot/selected/selected_random.csv
+Wrote 40 selected samples to /root/clip_diffusion_fewshot_ccds/results/ccds_flowers20_5shot/selected/selected_clip_topk.csv
+Wrote 40 selected samples to /root/clip_diffusion_fewshot_ccds/results/ccds_flowers20_5shot/selected/selected_margin_topk.csv
+Wrote 40 selected samples to /root/clip_diffusion_fewshot_ccds/results/ccds_flowers20_5shot/selected/selected_ccds.csv
+```
+
+产物验证：
+
+| strategy | rows | labels | min/class | max/class | missing paths |
+|---|---:|---:|---:|---:|---:|
+| random | 40 | 20 | 2 | 2 | 0 |
+| clip_topk | 40 | 20 | 2 | 2 | 0 |
+| margin_topk | 40 | 20 | 2 | 2 | 0 |
+| ccds | 40 | 20 | 2 | 2 | 0 |
+
+关键产物：
+
+```text
+/root/clip_diffusion_fewshot_ccds/results/ccds_flowers20_5shot/selected/selected_random.csv
+/root/clip_diffusion_fewshot_ccds/results/ccds_flowers20_5shot/selected/selected_clip_topk.csv
+/root/clip_diffusion_fewshot_ccds/results/ccds_flowers20_5shot/selected/selected_margin_topk.csv
+/root/clip_diffusion_fewshot_ccds/results/ccds_flowers20_5shot/selected/selected_ccds.csv
+```
+
+候选选择时出现一个 pandas FutureWarning：
+
+```text
+DataFrameGroupBy.apply operated on the grouping columns. This behavior is deprecated...
+```
+
+该 warning 不影响本次输出，但后续可以考虑调整 `src/ccds/selection.py` 中的 groupby/apply 写法，以兼容未来 pandas 版本。
+
+## 当前整体状态
+
+已完成：
+
+- [x] Hugging Face 缓存迁移到 `/root/gpufree-data`
+- [x] SD1.5 权重加载验证
+- [x] 20 类 × 每类 2 张真实扩散生成
+- [x] 生成产物 metadata 验证
+- [x] CLIP 打分与 image embedding 保存
+- [x] 四种选择策略输出验证
+
+当前最重要的实验产物目录：
+
+```text
+/root/clip_diffusion_fewshot_ccds/generated/flowers20_sd15/
+/root/clip_diffusion_fewshot_ccds/results/ccds_flowers20_5shot/
+```
+
+## 2026-05-31 追加：分类器小规模闭环验证
+
+### Git / VS Code 项目状态
+
+已初始化本地 git 仓库，并配置远程地址：
+
+```text
+git@github.com:Muelsyseqwq/CCDS.git
+```
+
+已完善 `.gitignore`，避免提交以下大文件或本地私有文件：
+
+```text
+.venv/
+data/raw/
+generated/
+results/
+*.pt
+*.pth
+*.ckpt
+*.npz
+.claude/settings.local.json
+```
+
+VS Code 工作区解释器已配置为：
+
+```text
+${workspaceFolder}/.venv/bin/python
+```
+
+注意：当前服务器尚未配置可用于 GitHub 的 SSH 公钥认证，`ssh -T git@github.com` 返回：
+
+```text
+Permission denied (publickey).
+```
+
+因此本地 commit 可以完成，但 push 需要先给这台机器配置 GitHub SSH key 或使用 GitHub CLI 登录。
+
+### 1 epoch 小规模分类器结果
+
+在当前小规模真实扩散产物上，已补齐 6 个方法的 `flowers20_5shot`、`seed=0`、`epochs=1` 快速闭环验证。
+
+| method | accuracy | macro_f1 | best_val_accuracy | epochs | train_size | test_size |
+|---|---:|---:|---:|---:|---:|---:|
+| real_only | 0.1960 | 0.1570 | 0.2200 | 1 | 100 | 755 |
+| traditional_aug | 0.1868 | 0.1511 | 0.1800 | 1 | 100 | 755 |
+| diffusion_random | 0.1430 | 0.1223 | 0.1900 | 1 | 140 | 755 |
+| clip_topk | 0.1709 | 0.1567 | 0.1850 | 1 | 140 | 755 |
+| margin_topk | 0.1656 | 0.1446 | 0.1800 | 1 | 140 | 755 |
+| ccds | 0.1603 | 0.1439 | 0.1800 | 1 | 140 | 755 |
+
+结果文件：
+
+```text
+/root/clip_diffusion_fewshot_ccds/results/classifier/all_results.csv
+/root/clip_diffusion_fewshot_ccds/results/classifier/ccds_flowers20_5shot/<method>/seed0/
+```
+
+每个方法目录包含：
+
+```text
+metrics.json
+model.pt
+summary.csv
+```
+
+解释：这只是 1 epoch smoke / sanity check，用来确认“真实生成 → CLIP 打分 → 候选选择 → 分类训练”完整链路可运行；不能作为正式论文结论。当前每类只有 2 张生成图，且 `selection.selected_per_class=10`，候选池过小，CCDS 的多样性选择优势无法充分体现。
+
+## 下一步建议
+
+### 方案 A：扩大真实生成规模
+
+建议先从每类 10 张开始：
+
+```text
+20 类 × 每类 10 张 = 200 张
+```
+
+然后重新跑：
+
+```bash
+python scripts/generate_candidates.py --config configs/flowers20_5shot.yaml --limit-per-class 10
+python scripts/score_candidates.py --config configs/flowers20_5shot.yaml
+python scripts/select_candidates.py --config configs/flowers20_5shot.yaml --strategy all
+```
+
+再用 5 epoch 跑完整 6 方法对比。
+
+### 方案 B：正式实验设置
+
+更正式的实验建议：
+
+```text
+每类候选图：40 或 80
+每类选择图：10
+随机种子：0, 1, 2
+训练 epoch：按配置或至少 20+
+```
+
+这样才能观察 CCDS 相比 random / CLIP top-k / margin top-k 是否有稳定优势。
+
+### 方案 C：修复/补充工程细节
+
+1. 检查 `score_candidates.py` / `plot_results.py` 的图表输出逻辑，确保 score distribution 图能稳定生成。
+2. 修复 `src/ccds/selection.py` 中 pandas `DataFrameGroupBy.apply` 的 FutureWarning。
+3. 增加一个结果汇总脚本，把 `results/classifier/all_results.csv` 自动转为 markdown 表格和论文图。
+
+## 注意事项
+
+1. SD1.5 下载过程中镜像连接可能中断，但缓存会尽量保留并 resume。
+2. `/root/.cache/huggingface` 当前是软链接，不要误删目标目录 `/root/gpufree-data/cache/huggingface`。
+3. 当前小规模选择结果每类只有 2 张，CCDS 的多样性优势无法充分体现；完整实验需要更大的候选池。
+4. 本次禁用了 Stable Diffusion safety checker，仅用于本地科研实验，不应直接用于公开服务。
+5. 不要把 SSH 私钥、Hugging Face token 或任何 API key 写入代码、日志、commit 或聊天中。

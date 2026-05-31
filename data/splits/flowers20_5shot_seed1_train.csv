@@ -1,0 +1,101 @@
+image_path,label,class_index,class_name,original_split
+/root/clip_diffusion_fewshot_ccds/data/raw/flowers-102/jpg/image_06768.jpg,0,0,pink primrose,train
+/root/clip_diffusion_fewshot_ccds/data/raw/flowers-102/jpg/image_06755.jpg,0,0,pink primrose,train
+/root/clip_diffusion_fewshot_ccds/data/raw/flowers-102/jpg/image_06744.jpg,0,0,pink primrose,train
+/root/clip_diffusion_fewshot_ccds/data/raw/flowers-102/jpg/image_06765.jpg,0,0,pink primrose,train
+/root/clip_diffusion_fewshot_ccds/data/raw/flowers-102/jpg/image_06736.jpg,0,0,pink primrose,train
+/root/clip_diffusion_fewshot_ccds/data/raw/flowers-102/jpg/image_05108.jpg,1,1,hard-leaved pocket orchid,train
+/root/clip_diffusion_fewshot_ccds/data/raw/flowers-102/jpg/image_05146.jpg,1,1,hard-leaved pocket orchid,train
+/root/clip_diffusion_fewshot_ccds/data/raw/flowers-102/jpg/image_05124.jpg,1,1,hard-leaved pocket orchid,train
+/root/clip_diffusion_fewshot_ccds/data/raw/flowers-102/jpg/image_05097.jpg,1,1,hard-leaved pocket orchid,train
+/root/clip_diffusion_fewshot_ccds/data/raw/flowers-102/jpg/image_05137.jpg,1,1,hard-leaved pocket orchid,train
+/root/clip_diffusion_fewshot_ccds/data/raw/flowers-102/jpg/image_06623.jpg,2,2,canterbury bells,train
+/root/clip_diffusion_fewshot_ccds/data/raw/flowers-102/jpg/image_06618.jpg,2,2,canterbury bells,train
+/root/clip_diffusion_fewshot_ccds/data/raw/flowers-102/jpg/image_06634.jpg,2,2,canterbury bells,train
+/root/clip_diffusion_fewshot_ccds/data/raw/flowers-102/jpg/image_06624.jpg,2,2,canterbury bells,train
+/root/clip_diffusion_fewshot_ccds/data/raw/flowers-102/jpg/image_06651.jpg,2,2,canterbury bells,train
+/root/clip_diffusion_fewshot_ccds/data/raw/flowers-102/jpg/image_05637.jpg,3,3,sweet pea,train
+/root/clip_diffusion_fewshot_ccds/data/raw/flowers-102/jpg/image_05662.jpg,3,3,sweet pea,train
+/root/clip_diffusion_fewshot_ccds/data/raw/flowers-102/jpg/image_05659.jpg,3,3,sweet pea,train
+/root/clip_diffusion_fewshot_ccds/data/raw/flowers-102/jpg/image_05634.jpg,3,3,sweet pea,train
+/root/clip_diffusion_fewshot_ccds/data/raw/flowers-102/jpg/image_05664.jpg,3,3,sweet pea,train
+/root/clip_diffusion_fewshot_ccds/data/raw/flowers-102/jpg/image_05174.jpg,4,4,english marigold,train
+/root/clip_diffusion_fewshot_ccds/data/raw/flowers-102/jpg/image_05191.jpg,4,4,english marigold,train
+/root/clip_diffusion_fewshot_ccds/data/raw/flowers-102/jpg/image_05167.jpg,4,4,english marigold,train
+/root/clip_diffusion_fewshot_ccds/data/raw/flowers-102/jpg/image_05194.jpg,4,4,english marigold,train
+/root/clip_diffusion_fewshot_ccds/data/raw/flowers-102/jpg/image_05164.jpg,4,4,english marigold,train
+/root/clip_diffusion_fewshot_ccds/data/raw/flowers-102/jpg/image_07194.jpg,5,5,tiger lily,train
+/root/clip_diffusion_fewshot_ccds/data/raw/flowers-102/jpg/image_08105.jpg,5,5,tiger lily,train
+/root/clip_diffusion_fewshot_ccds/data/raw/flowers-102/jpg/image_07195.jpg,5,5,tiger lily,train
+/root/clip_diffusion_fewshot_ccds/data/raw/flowers-102/jpg/image_07165.jpg,5,5,tiger lily,train
+/root/clip_diffusion_fewshot_ccds/data/raw/flowers-102/jpg/image_07191.jpg,5,5,tiger lily,train
+/root/clip_diffusion_fewshot_ccds/data/raw/flowers-102/jpg/image_07203.jpg,6,6,moon orchid,train
+/root/clip_diffusion_fewshot_ccds/data/raw/flowers-102/jpg/image_07233.jpg,6,6,moon orchid,train
+/root/clip_diffusion_fewshot_ccds/data/raw/flowers-102/jpg/image_07226.jpg,6,6,moon orchid,train
+/root/clip_diffusion_fewshot_ccds/data/raw/flowers-102/jpg/image_07214.jpg,6,6,moon orchid,train
+/root/clip_diffusion_fewshot_ccds/data/raw/flowers-102/jpg/image_07218.jpg,6,6,moon orchid,train
+/root/clip_diffusion_fewshot_ccds/data/raw/flowers-102/jpg/image_03294.jpg,7,7,bird of paradise,train
+/root/clip_diffusion_fewshot_ccds/data/raw/flowers-102/jpg/image_03315.jpg,7,7,bird of paradise,train
+/root/clip_diffusion_fewshot_ccds/data/raw/flowers-102/jpg/image_03356.jpg,7,7,bird of paradise,train
+/root/clip_diffusion_fewshot_ccds/data/raw/flowers-102/jpg/image_03360.jpg,7,7,bird of paradise,train
+/root/clip_diffusion_fewshot_ccds/data/raw/flowers-102/jpg/image_03345.jpg,7,7,bird of paradise,train
+/root/clip_diffusion_fewshot_ccds/data/raw/flowers-102/jpg/image_06424.jpg,8,8,monkshood,train
+/root/clip_diffusion_fewshot_ccds/data/raw/flowers-102/jpg/image_06437.jpg,8,8,monkshood,train
+/root/clip_diffusion_fewshot_ccds/data/raw/flowers-102/jpg/image_06430.jpg,8,8,monkshood,train
+/root/clip_diffusion_fewshot_ccds/data/raw/flowers-102/jpg/image_06415.jpg,8,8,monkshood,train
+/root/clip_diffusion_fewshot_ccds/data/raw/flowers-102/jpg/image_06408.jpg,8,8,monkshood,train
+/root/clip_diffusion_fewshot_ccds/data/raw/flowers-102/jpg/image_07098.jpg,9,9,globe thistle,train
+/root/clip_diffusion_fewshot_ccds/data/raw/flowers-102/jpg/image_08094.jpg,9,9,globe thistle,train
+/root/clip_diffusion_fewshot_ccds/data/raw/flowers-102/jpg/image_07096.jpg,9,9,globe thistle,train
+/root/clip_diffusion_fewshot_ccds/data/raw/flowers-102/jpg/image_07113.jpg,9,9,globe thistle,train
+/root/clip_diffusion_fewshot_ccds/data/raw/flowers-102/jpg/image_08096.jpg,9,9,globe thistle,train
+/root/clip_diffusion_fewshot_ccds/data/raw/flowers-102/jpg/image_03102.jpg,10,10,snapdragon,train
+/root/clip_diffusion_fewshot_ccds/data/raw/flowers-102/jpg/image_03117.jpg,10,10,snapdragon,train
+/root/clip_diffusion_fewshot_ccds/data/raw/flowers-102/jpg/image_03114.jpg,10,10,snapdragon,train
+/root/clip_diffusion_fewshot_ccds/data/raw/flowers-102/jpg/image_03101.jpg,10,10,snapdragon,train
+/root/clip_diffusion_fewshot_ccds/data/raw/flowers-102/jpg/image_03150.jpg,10,10,snapdragon,train
+/root/clip_diffusion_fewshot_ccds/data/raw/flowers-102/jpg/image_04059.jpg,11,11,colt's foot,train
+/root/clip_diffusion_fewshot_ccds/data/raw/flowers-102/jpg/image_04045.jpg,11,11,colt's foot,train
+/root/clip_diffusion_fewshot_ccds/data/raw/flowers-102/jpg/image_04066.jpg,11,11,colt's foot,train
+/root/clip_diffusion_fewshot_ccds/data/raw/flowers-102/jpg/image_04030.jpg,11,11,colt's foot,train
+/root/clip_diffusion_fewshot_ccds/data/raw/flowers-102/jpg/image_04036.jpg,11,11,colt's foot,train
+/root/clip_diffusion_fewshot_ccds/data/raw/flowers-102/jpg/image_05755.jpg,12,12,king protea,train
+/root/clip_diffusion_fewshot_ccds/data/raw/flowers-102/jpg/image_05787.jpg,12,12,king protea,train
+/root/clip_diffusion_fewshot_ccds/data/raw/flowers-102/jpg/image_05783.jpg,12,12,king protea,train
+/root/clip_diffusion_fewshot_ccds/data/raw/flowers-102/jpg/image_05786.jpg,12,12,king protea,train
+/root/clip_diffusion_fewshot_ccds/data/raw/flowers-102/jpg/image_05746.jpg,12,12,king protea,train
+/root/clip_diffusion_fewshot_ccds/data/raw/flowers-102/jpg/image_06083.jpg,13,13,spear thistle,train
+/root/clip_diffusion_fewshot_ccds/data/raw/flowers-102/jpg/image_06066.jpg,13,13,spear thistle,train
+/root/clip_diffusion_fewshot_ccds/data/raw/flowers-102/jpg/image_06093.jpg,13,13,spear thistle,train
+/root/clip_diffusion_fewshot_ccds/data/raw/flowers-102/jpg/image_06058.jpg,13,13,spear thistle,train
+/root/clip_diffusion_fewshot_ccds/data/raw/flowers-102/jpg/image_06092.jpg,13,13,spear thistle,train
+/root/clip_diffusion_fewshot_ccds/data/raw/flowers-102/jpg/image_06350.jpg,14,14,yellow iris,train
+/root/clip_diffusion_fewshot_ccds/data/raw/flowers-102/jpg/image_06357.jpg,14,14,yellow iris,train
+/root/clip_diffusion_fewshot_ccds/data/raw/flowers-102/jpg/image_06364.jpg,14,14,yellow iris,train
+/root/clip_diffusion_fewshot_ccds/data/raw/flowers-102/jpg/image_06348.jpg,14,14,yellow iris,train
+/root/clip_diffusion_fewshot_ccds/data/raw/flowers-102/jpg/image_06386.jpg,14,14,yellow iris,train
+/root/clip_diffusion_fewshot_ccds/data/raw/flowers-102/jpg/image_06652.jpg,15,15,globe-flower,train
+/root/clip_diffusion_fewshot_ccds/data/raw/flowers-102/jpg/image_06674.jpg,15,15,globe-flower,train
+/root/clip_diffusion_fewshot_ccds/data/raw/flowers-102/jpg/image_06690.jpg,15,15,globe-flower,train
+/root/clip_diffusion_fewshot_ccds/data/raw/flowers-102/jpg/image_06688.jpg,15,15,globe-flower,train
+/root/clip_diffusion_fewshot_ccds/data/raw/flowers-102/jpg/image_06660.jpg,15,15,globe-flower,train
+/root/clip_diffusion_fewshot_ccds/data/raw/flowers-102/jpg/image_03860.jpg,16,16,purple coneflower,train
+/root/clip_diffusion_fewshot_ccds/data/raw/flowers-102/jpg/image_03873.jpg,16,16,purple coneflower,train
+/root/clip_diffusion_fewshot_ccds/data/raw/flowers-102/jpg/image_03875.jpg,16,16,purple coneflower,train
+/root/clip_diffusion_fewshot_ccds/data/raw/flowers-102/jpg/image_03848.jpg,16,16,purple coneflower,train
+/root/clip_diffusion_fewshot_ccds/data/raw/flowers-102/jpg/image_03908.jpg,16,16,purple coneflower,train
+/root/clip_diffusion_fewshot_ccds/data/raw/flowers-102/jpg/image_04284.jpg,17,17,peruvian lily,train
+/root/clip_diffusion_fewshot_ccds/data/raw/flowers-102/jpg/image_04252.jpg,17,17,peruvian lily,train
+/root/clip_diffusion_fewshot_ccds/data/raw/flowers-102/jpg/image_04299.jpg,17,17,peruvian lily,train
+/root/clip_diffusion_fewshot_ccds/data/raw/flowers-102/jpg/image_04244.jpg,17,17,peruvian lily,train
+/root/clip_diffusion_fewshot_ccds/data/raw/flowers-102/jpg/image_04279.jpg,17,17,peruvian lily,train
+/root/clip_diffusion_fewshot_ccds/data/raw/flowers-102/jpg/image_06179.jpg,18,18,balloon flower,train
+/root/clip_diffusion_fewshot_ccds/data/raw/flowers-102/jpg/image_06161.jpg,18,18,balloon flower,train
+/root/clip_diffusion_fewshot_ccds/data/raw/flowers-102/jpg/image_06189.jpg,18,18,balloon flower,train
+/root/clip_diffusion_fewshot_ccds/data/raw/flowers-102/jpg/image_06175.jpg,18,18,balloon flower,train
+/root/clip_diffusion_fewshot_ccds/data/raw/flowers-102/jpg/image_06192.jpg,18,18,balloon flower,train
+/root/clip_diffusion_fewshot_ccds/data/raw/flowers-102/jpg/image_04939.jpg,19,19,giant white arum lily,train
+/root/clip_diffusion_fewshot_ccds/data/raw/flowers-102/jpg/image_04923.jpg,19,19,giant white arum lily,train
+/root/clip_diffusion_fewshot_ccds/data/raw/flowers-102/jpg/image_04919.jpg,19,19,giant white arum lily,train
+/root/clip_diffusion_fewshot_ccds/data/raw/flowers-102/jpg/image_04925.jpg,19,19,giant white arum lily,train
+/root/clip_diffusion_fewshot_ccds/data/raw/flowers-102/jpg/image_04938.jpg,19,19,giant white arum lily,train

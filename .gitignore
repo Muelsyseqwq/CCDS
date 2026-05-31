@@ -1,0 +1,31 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+venv/
+
+# Data and generated artifacts
+data/raw/
+generated/
+results/
+!results/.gitkeep
+*.pt
+*.pth
+*.ckpt
+*.npz
+
+# Experiment caches
+.pytest_cache/
+.cache/
+
+# Logs
+*.log
+wandb/
+
+# Claude Code local settings
+.claude/settings.local.json
+
+# OS / IDE
+.DS_Store
+.idea/

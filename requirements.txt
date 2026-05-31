@@ -1,0 +1,21 @@
+--extra-index-url https://download.pytorch.org/whl/cu121
+torch
+torchvision
+torchaudio
+numpy
+pandas
+scikit-learn
+matplotlib
+seaborn
+tqdm
+Pillow
+PyYAML
+open_clip_torch
+diffusers
+transformers
+accelerate
+safetensors
+huggingface_hub
+protobuf
+sentencepiece
+pytest

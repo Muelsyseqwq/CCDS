@@ -1,0 +1,49 @@
+project_name: ccds_flowers2_1shot_smoke
+seed_list: [0]
+
+dataset:
+  name: flowers102
+  root: data/raw
+  num_classes: 2
+  shot: 1
+  image_size: 128
+  class_indices: []
+
+generation:
+  model_id: runwayml/stable-diffusion-v1-5
+  output_dir: generated/smoke_flowers2
+  num_candidates_per_class: 2
+  image_size: 512
+  num_inference_steps: 5
+  guidance_scale: 7.5
+  batch_size: 1
+  dtype: float16
+  prompts:
+    - "a high-quality photo of a {class_name} flower"
+    - "a close-up photo of a {class_name} flower"
+  negative_prompt: "low quality, blurry, distorted, unrealistic, text, watermark, multiple objects"
+
+clip:
+  model_name: ViT-B-32
+  pretrained: openai
+  batch_size: 4
+
+selection:
+  selected_per_class: 1
+  top_m_for_diversity: 2
+  strategies:
+    - random
+    - clip_topk
+    - margin_topk
+    - ccds
+
+classifier:
+  backbone: resnet50
+  pretrained: true
+  freeze_backbone: true
+  epochs: 1
+  batch_size: 4
+  lr: 0.001
+  weight_decay: 0.0001
+  num_workers: 0
+  output_dir: results/classifier

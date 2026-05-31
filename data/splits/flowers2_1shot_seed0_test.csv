@@ -1,0 +1,61 @@
+image_path,label,class_index,class_name,original_split
+/root/clip_diffusion_fewshot_ccds/data/raw/flowers-102/jpg/image_06734.jpg,0,0,pink primrose,test
+/root/clip_diffusion_fewshot_ccds/data/raw/flowers-102/jpg/image_06735.jpg,0,0,pink primrose,test
+/root/clip_diffusion_fewshot_ccds/data/raw/flowers-102/jpg/image_06737.jpg,0,0,pink primrose,test
+/root/clip_diffusion_fewshot_ccds/data/raw/flowers-102/jpg/image_06742.jpg,0,0,pink primrose,test
+/root/clip_diffusion_fewshot_ccds/data/raw/flowers-102/jpg/image_06743.jpg,0,0,pink primrose,test
+/root/clip_diffusion_fewshot_ccds/data/raw/flowers-102/jpg/image_06745.jpg,0,0,pink primrose,test
+/root/clip_diffusion_fewshot_ccds/data/raw/flowers-102/jpg/image_06746.jpg,0,0,pink primrose,test
+/root/clip_diffusion_fewshot_ccds/data/raw/flowers-102/jpg/image_06748.jpg,0,0,pink primrose,test
+/root/clip_diffusion_fewshot_ccds/data/raw/flowers-102/jpg/image_06751.jpg,0,0,pink primrose,test
+/root/clip_diffusion_fewshot_ccds/data/raw/flowers-102/jpg/image_06752.jpg,0,0,pink primrose,test
+/root/clip_diffusion_fewshot_ccds/data/raw/flowers-102/jpg/image_06753.jpg,0,0,pink primrose,test
+/root/clip_diffusion_fewshot_ccds/data/raw/flowers-102/jpg/image_06756.jpg,0,0,pink primrose,test
+/root/clip_diffusion_fewshot_ccds/data/raw/flowers-102/jpg/image_06757.jpg,0,0,pink primrose,test
+/root/clip_diffusion_fewshot_ccds/data/raw/flowers-102/jpg/image_06758.jpg,0,0,pink primrose,test
+/root/clip_diffusion_fewshot_ccds/data/raw/flowers-102/jpg/image_06759.jpg,0,0,pink primrose,test
+/root/clip_diffusion_fewshot_ccds/data/raw/flowers-102/jpg/image_06760.jpg,0,0,pink primrose,test
+/root/clip_diffusion_fewshot_ccds/data/raw/flowers-102/jpg/image_06764.jpg,0,0,pink primrose,test
+/root/clip_diffusion_fewshot_ccds/data/raw/flowers-102/jpg/image_06769.jpg,0,0,pink primrose,test
+/root/clip_diffusion_fewshot_ccds/data/raw/flowers-102/jpg/image_06770.jpg,0,0,pink primrose,test
+/root/clip_diffusion_fewshot_ccds/data/raw/flowers-102/jpg/image_06772.jpg,0,0,pink primrose,test
+/root/clip_diffusion_fewshot_ccds/data/raw/flowers-102/jpg/image_05087.jpg,1,1,hard-leaved pocket orchid,test
+/root/clip_diffusion_fewshot_ccds/data/raw/flowers-102/jpg/image_05088.jpg,1,1,hard-leaved pocket orchid,test
+/root/clip_diffusion_fewshot_ccds/data/raw/flowers-102/jpg/image_05089.jpg,1,1,hard-leaved pocket orchid,test
+/root/clip_diffusion_fewshot_ccds/data/raw/flowers-102/jpg/image_05090.jpg,1,1,hard-leaved pocket orchid,test
+/root/clip_diffusion_fewshot_ccds/data/raw/flowers-102/jpg/image_05092.jpg,1,1,hard-leaved pocket orchid,test
+/root/clip_diffusion_fewshot_ccds/data/raw/flowers-102/jpg/image_05093.jpg,1,1,hard-leaved pocket orchid,test
+/root/clip_diffusion_fewshot_ccds/data/raw/flowers-102/jpg/image_05094.jpg,1,1,hard-leaved pocket orchid,test
+/root/clip_diffusion_fewshot_ccds/data/raw/flowers-102/jpg/image_05095.jpg,1,1,hard-leaved pocket orchid,test
+/root/clip_diffusion_fewshot_ccds/data/raw/flowers-102/jpg/image_05096.jpg,1,1,hard-leaved pocket orchid,test
+/root/clip_diffusion_fewshot_ccds/data/raw/flowers-102/jpg/image_05098.jpg,1,1,hard-leaved pocket orchid,test
+/root/clip_diffusion_fewshot_ccds/data/raw/flowers-102/jpg/image_05099.jpg,1,1,hard-leaved pocket orchid,test
+/root/clip_diffusion_fewshot_ccds/data/raw/flowers-102/jpg/image_05102.jpg,1,1,hard-leaved pocket orchid,test
+/root/clip_diffusion_fewshot_ccds/data/raw/flowers-102/jpg/image_05103.jpg,1,1,hard-leaved pocket orchid,test
+/root/clip_diffusion_fewshot_ccds/data/raw/flowers-102/jpg/image_05105.jpg,1,1,hard-leaved pocket orchid,test
+/root/clip_diffusion_fewshot_ccds/data/raw/flowers-102/jpg/image_05107.jpg,1,1,hard-leaved pocket orchid,test
+/root/clip_diffusion_fewshot_ccds/data/raw/flowers-102/jpg/image_05109.jpg,1,1,hard-leaved pocket orchid,test
+/root/clip_diffusion_fewshot_ccds/data/raw/flowers-102/jpg/image_05110.jpg,1,1,hard-leaved pocket orchid,test
+/root/clip_diffusion_fewshot_ccds/data/raw/flowers-102/jpg/image_05111.jpg,1,1,hard-leaved pocket orchid,test
+/root/clip_diffusion_fewshot_ccds/data/raw/flowers-102/jpg/image_05112.jpg,1,1,hard-leaved pocket orchid,test
+/root/clip_diffusion_fewshot_ccds/data/raw/flowers-102/jpg/image_05113.jpg,1,1,hard-leaved pocket orchid,test
+/root/clip_diffusion_fewshot_ccds/data/raw/flowers-102/jpg/image_05117.jpg,1,1,hard-leaved pocket orchid,test
+/root/clip_diffusion_fewshot_ccds/data/raw/flowers-102/jpg/image_05119.jpg,1,1,hard-leaved pocket orchid,test
+/root/clip_diffusion_fewshot_ccds/data/raw/flowers-102/jpg/image_05121.jpg,1,1,hard-leaved pocket orchid,test
+/root/clip_diffusion_fewshot_ccds/data/raw/flowers-102/jpg/image_05122.jpg,1,1,hard-leaved pocket orchid,test
+/root/clip_diffusion_fewshot_ccds/data/raw/flowers-102/jpg/image_05125.jpg,1,1,hard-leaved pocket orchid,test
+/root/clip_diffusion_fewshot_ccds/data/raw/flowers-102/jpg/image_05126.jpg,1,1,hard-leaved pocket orchid,test
+/root/clip_diffusion_fewshot_ccds/data/raw/flowers-102/jpg/image_05127.jpg,1,1,hard-leaved pocket orchid,test
+/root/clip_diffusion_fewshot_ccds/data/raw/flowers-102/jpg/image_05128.jpg,1,1,hard-leaved pocket orchid,test
+/root/clip_diffusion_fewshot_ccds/data/raw/flowers-102/jpg/image_05129.jpg,1,1,hard-leaved pocket orchid,test
+/root/clip_diffusion_fewshot_ccds/data/raw/flowers-102/jpg/image_05130.jpg,1,1,hard-leaved pocket orchid,test
+/root/clip_diffusion_fewshot_ccds/data/raw/flowers-102/jpg/image_05131.jpg,1,1,hard-leaved pocket orchid,test
+/root/clip_diffusion_fewshot_ccds/data/raw/flowers-102/jpg/image_05133.jpg,1,1,hard-leaved pocket orchid,test
+/root/clip_diffusion_fewshot_ccds/data/raw/flowers-102/jpg/image_05134.jpg,1,1,hard-leaved pocket orchid,test
+/root/clip_diffusion_fewshot_ccds/data/raw/flowers-102/jpg/image_05135.jpg,1,1,hard-leaved pocket orchid,test
+/root/clip_diffusion_fewshot_ccds/data/raw/flowers-102/jpg/image_05136.jpg,1,1,hard-leaved pocket orchid,test
+/root/clip_diffusion_fewshot_ccds/data/raw/flowers-102/jpg/image_05139.jpg,1,1,hard-leaved pocket orchid,test
+/root/clip_diffusion_fewshot_ccds/data/raw/flowers-102/jpg/image_05140.jpg,1,1,hard-leaved pocket orchid,test
+/root/clip_diffusion_fewshot_ccds/data/raw/flowers-102/jpg/image_05141.jpg,1,1,hard-leaved pocket orchid,test
+/root/clip_diffusion_fewshot_ccds/data/raw/flowers-102/jpg/image_05143.jpg,1,1,hard-leaved pocket orchid,test
+/root/clip_diffusion_fewshot_ccds/data/raw/flowers-102/jpg/image_05144.jpg,1,1,hard-leaved pocket orchid,test

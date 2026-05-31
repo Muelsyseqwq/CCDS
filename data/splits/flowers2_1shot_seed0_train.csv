@@ -1,0 +1,3 @@
+image_path,label,class_index,class_name,original_split
+/root/clip_diffusion_fewshot_ccds/data/raw/flowers-102/jpg/image_06771.jpg,0,0,pink primrose,train
+/root/clip_diffusion_fewshot_ccds/data/raw/flowers-102/jpg/image_05124.jpg,1,1,hard-leaved pocket orchid,train
