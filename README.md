@@ -95,3 +95,32 @@ python scripts/run_quick_pipeline.py \
 该命令使用 Flowers102 held-out 图片模拟生成候选，避免第一次验证时下载和运行 Stable Diffusion。通过后再按 `docs/运行指南.md` 跑正式 20 类实验。
 
 结果现在按 `project_name` 隔离在 `results/<project_name>/` 下，分类器汇总保存在 `results/classifier/all_results.csv`，聚合表保存在 `results/classifier/summary_by_method.csv`。
+
+## 已完成实验摘要
+
+已完成 `configs/flowers20_5shot.yaml` 下的 Flowers20 5-shot 实验：
+
+```text
+20 类 × 每类 80 张扩散候选图 = 1600 张生成图
+每类选择 10 张生成图用于增强
+6 种方法 × 3 个随机种子 × 20 epoch
+```
+
+3 个随机种子的聚合结果如下：
+
+| method | accuracy mean | accuracy std | macro F1 mean | macro F1 std |
+|---|---:|---:|---:|---:|
+| real_only | 0.8344 | 0.0069 | 0.8031 | 0.0142 |
+| traditional_aug | 0.8269 | 0.0176 | 0.7993 | 0.0290 |
+| diffusion_random | 0.8561 | 0.0073 | 0.8206 | 0.0077 |
+| clip_topk | 0.8614 | 0.0125 | 0.8284 | 0.0106 |
+| margin_topk | 0.8433 | 0.0054 | 0.8103 | 0.0068 |
+| ccds | 0.8508 | 0.0038 | 0.8207 | 0.0047 |
+
+结论：扩散增强整体优于 `real_only` 和 `traditional_aug`；当前配置下 `clip_topk` 取得最高平均 Accuracy，CCDS 在多随机种子下取得稳定提升。完整实验报告保存在本地结果快照：
+
+```text
+results/overnight_runs/paid_overnight_20260601_stage80_resume/stage_80cand_20epoch/experiment_summary.md
+```
+
+注意：`generated/`、`results/`、`logs/`、checkpoint 和 embedding 文件默认不提交到 GitHub。

@@ -347,49 +347,127 @@ summary.csv
 
 解释：这只是 1 epoch smoke / sanity check，用来确认“真实生成 → CLIP 打分 → 候选选择 → 分类训练”完整链路可运行；不能作为正式论文结论。当前每类只有 2 张生成图，且 `selection.selected_per_class=10`，候选池过小，CCDS 的多样性选择优势无法充分体现。
 
-## 下一步建议
+## 2026-06-01 追加：40/80 候选规模 overnight 实验
 
-### 方案 A：扩大真实生成规模
+### overnight runner 修复与续跑
 
-建议先从每类 10 张开始：
-
-```text
-20 类 × 每类 10 张 = 200 张
-```
-
-然后重新跑：
-
-```bash
-python scripts/generate_candidates.py --config configs/flowers20_5shot.yaml --limit-per-class 10
-python scripts/score_candidates.py --config configs/flowers20_5shot.yaml
-python scripts/select_candidates.py --config configs/flowers20_5shot.yaml --strategy all
-```
-
-再用 5 epoch 跑完整 6 方法对比。
-
-### 方案 B：正式实验设置
-
-更正式的实验建议：
+新增并修复 overnight 实验脚本：
 
 ```text
-每类候选图：40 或 80
-每类选择图：10
-随机种子：0, 1, 2
-训练 epoch：按配置或至少 20+
+scripts/run_paid_overnight_experiment.sh
 ```
 
-这样才能观察 CCDS 相比 random / CLIP top-k / margin top-k 是否有稳定优势。
+脚本支持：
 
-### 方案 C：修复/补充工程细节
+- 记录环境、GPU、磁盘、git commit 与日志。
+- 分阶段运行 40 candidates/class 与 80 candidates/class 实验。
+- 校验 metadata、CLIP scores、embedding、selected CSV 和 classifier summary 行数。
+- 保存每阶段快照到 `results/overnight_runs/<run_id>/`。
+- 使用 `RUN_STAGE_40`、`RUN_STAGE_80`、`SNAPSHOT_EXISTING_STAGE_40` 控制续跑。
 
-1. 检查 `score_candidates.py` / `plot_results.py` 的图表输出逻辑，确保 score distribution 图能稳定生成。
-2. 修复 `src/ccds/selection.py` 中 pandas `DataFrameGroupBy.apply` 的 FutureWarning。
-3. 增加一个结果汇总脚本，把 `results/classifier/all_results.csv` 自动转为 markdown 表格和论文图。
+最初 `stage_40cand_10epoch` 已完成生成、打分、选择和训练，但 validation 阶段因脚本错误中断：脚本错误地假设 `clip_image_embeddings.npz` 中存在 `image_paths` key；实际 `src/ccds/clip_scoring.py` 以“每张图片一个安全化 key”的形式保存 embedding。该问题已修复，验证逻辑改为兼容当前 NPZ 格式。
+
+### stage_40cand_10epoch 结果
+
+快照目录：
+
+```text
+/root/clip_diffusion_fewshot_ccds/results/overnight_runs/paid_overnight_20260531_215657/stage_40cand_10epoch
+```
+
+完成内容：
+
+```text
+20 类 × 每类 40 张候选图 = 800 张真实扩散图
+4 种选择策略 × 每类选择 10 张 = 每策略 200 张
+6 种方法 × 3 seeds × 10 epochs = 18 组分类训练
+```
+
+3 个 seed 聚合结果：
+
+| method | accuracy mean | accuracy std | macro F1 mean | macro F1 std |
+|---|---:|---:|---:|---:|
+| real_only | 0.8093 | 0.0464 | 0.7774 | 0.0570 |
+| traditional_aug | 0.7978 | 0.0340 | 0.7663 | 0.0427 |
+| diffusion_random | 0.8450 | 0.0147 | 0.8154 | 0.0134 |
+| clip_topk | 0.8521 | 0.0068 | 0.8137 | 0.0100 |
+| margin_topk | 0.8172 | 0.0035 | 0.7860 | 0.0083 |
+| ccds | 0.8419 | 0.0101 | 0.8093 | 0.0129 |
+
+### stage_80cand_20epoch 结果
+
+快照目录：
+
+```text
+/root/clip_diffusion_fewshot_ccds/results/overnight_runs/paid_overnight_20260601_stage80_resume/stage_80cand_20epoch
+```
+
+总结报告：
+
+```text
+/root/clip_diffusion_fewshot_ccds/results/overnight_runs/paid_overnight_20260601_stage80_resume/stage_80cand_20epoch/experiment_summary.md
+```
+
+完成内容：
+
+```text
+20 类 × 每类 80 张候选图 = 1600 张真实扩散图
+4 种选择策略 × 每类选择 10 张 = 每策略 200 张
+6 种方法 × 3 seeds × 20 epochs = 18 组分类训练
+```
+
+`validation.json` 检查全部通过：
+
+```text
+metadata_rows = 1600
+score_rows = 1600
+embedding_count = 1600
+selected_random = 200 rows
+selected_clip_topk = 200 rows
+selected_margin_topk = 200 rows
+selected_ccds = 200 rows
+classifier_missing_method_seed = []
+```
+
+3 个 seed 聚合结果：
+
+| method | accuracy mean | accuracy std | macro F1 mean | macro F1 std |
+|---|---:|---:|---:|---:|
+| real_only | 0.8344 | 0.0069 | 0.8031 | 0.0142 |
+| traditional_aug | 0.8269 | 0.0176 | 0.7993 | 0.0290 |
+| diffusion_random | 0.8561 | 0.0073 | 0.8206 | 0.0077 |
+| clip_topk | 0.8614 | 0.0125 | 0.8284 | 0.0106 |
+| margin_topk | 0.8433 | 0.0054 | 0.8103 | 0.0068 |
+| ccds | 0.8508 | 0.0038 | 0.8207 | 0.0047 |
+
+### 主要结论
+
+1. 扩散增强方法整体优于 `real_only` 与 `traditional_aug` 基线。
+2. `clip_topk` 在当前配置下取得最高平均 Accuracy：0.8614。
+3. `ccds` 平均 Accuracy 为 0.8508，平均 macro F1 为 0.8207，相比 `real_only` 提升 0.0163 accuracy points，相比 `traditional_aug` 提升 0.0238 accuracy points。
+4. `ccds` 在 3 个随机种子下表现较稳定，Accuracy 标准差为 0.0038。
+5. 当前配置下 CCDS 未超过 `clip_topk`，说明在 Flowers20 设置中 CLIP target similarity 是强选择信号；多样性约束可能牺牲部分高置信样本，但提升了选择覆盖与稳定性。
+
+## 后续建议
+
+### 工程与实验收尾
+
+1. 将 `scripts/run_paid_overnight_experiment.sh`、`EXPERIMENT_PROGRESS.md`、`README.md` 等代码/文档改动提交并 push。
+2. 结果、日志、生成图片、checkpoint 保持在本地与 `.gitignore` 中，不提交到 GitHub。
+3. 如需继续提升 CCDS，可调参 `selection.top_m_for_diversity`，或设计 margin 与 diversity 的加权策略。
+
+### 简历与面试表述
+
+简历可采用如下稳妥表述：
+
+> 完成 Oxford Flowers102 20 类 5-shot 小样本图像分类增强实验，构建 Stable Diffusion v1.5 候选生成、CLIP 语义打分、多策略候选选择与冻结 ResNet-50 分类评估闭环；在 80 候选/类、6 种方法、3 个随机种子、20 epoch 的对比中，扩散增强整体优于 real-only 与传统增强基线，最优平均 Accuracy 达 86.14%，CCDS 在多随机种子下取得稳定提升。
+
+面试中需要诚实说明：当前最优策略是 `clip_topk`，CCDS 的优势主要体现在稳定性和 diversity 设计思路上，后续可通过调节 top-M、聚类数、margin-diversity 权重继续优化。
 
 ## 注意事项
 
 1. SD1.5 下载过程中镜像连接可能中断，但缓存会尽量保留并 resume。
 2. `/root/.cache/huggingface` 当前是软链接，不要误删目标目录 `/root/gpufree-data/cache/huggingface`。
-3. 当前小规模选择结果每类只有 2 张，CCDS 的多样性优势无法充分体现；完整实验需要更大的候选池。
-4. 本次禁用了 Stable Diffusion safety checker，仅用于本地科研实验，不应直接用于公开服务。
-5. 不要把 SSH 私钥、Hugging Face token 或任何 API key 写入代码、日志、commit 或聊天中。
+3. 本次禁用了 Stable Diffusion safety checker，仅用于本地科研实验，不应直接用于公开服务。
+4. 不要把 SSH 私钥、Hugging Face token 或任何 API key 写入代码、日志、commit 或聊天中。
+5. 删除/清空/不可逆移除类操作仍需人工确认。
