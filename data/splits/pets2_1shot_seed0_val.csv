@@ -1,0 +1,21 @@
+image_path,label,class_index,class_name,original_split
+/root/clip_diffusion_fewshot_ccds/.claude/worktrees/anchored-ccds-results/data/raw/oxford-iiit-pet/images/Abyssinian_108.jpg,0,0,abyssinian,trainval
+/root/clip_diffusion_fewshot_ccds/.claude/worktrees/anchored-ccds-results/data/raw/oxford-iiit-pet/images/Abyssinian_110.jpg,0,0,abyssinian,trainval
+/root/clip_diffusion_fewshot_ccds/.claude/worktrees/anchored-ccds-results/data/raw/oxford-iiit-pet/images/Abyssinian_107.jpg,0,0,abyssinian,trainval
+/root/clip_diffusion_fewshot_ccds/.claude/worktrees/anchored-ccds-results/data/raw/oxford-iiit-pet/images/Abyssinian_144.jpg,0,0,abyssinian,trainval
+/root/clip_diffusion_fewshot_ccds/.claude/worktrees/anchored-ccds-results/data/raw/oxford-iiit-pet/images/Abyssinian_112.jpg,0,0,abyssinian,trainval
+/root/clip_diffusion_fewshot_ccds/.claude/worktrees/anchored-ccds-results/data/raw/oxford-iiit-pet/images/Abyssinian_101.jpg,0,0,abyssinian,trainval
+/root/clip_diffusion_fewshot_ccds/.claude/worktrees/anchored-ccds-results/data/raw/oxford-iiit-pet/images/Abyssinian_190.jpg,0,0,abyssinian,trainval
+/root/clip_diffusion_fewshot_ccds/.claude/worktrees/anchored-ccds-results/data/raw/oxford-iiit-pet/images/Abyssinian_193.jpg,0,0,abyssinian,trainval
+/root/clip_diffusion_fewshot_ccds/.claude/worktrees/anchored-ccds-results/data/raw/oxford-iiit-pet/images/Abyssinian_150.jpg,0,0,abyssinian,trainval
+/root/clip_diffusion_fewshot_ccds/.claude/worktrees/anchored-ccds-results/data/raw/oxford-iiit-pet/images/Abyssinian_115.jpg,0,0,abyssinian,trainval
+/root/clip_diffusion_fewshot_ccds/.claude/worktrees/anchored-ccds-results/data/raw/oxford-iiit-pet/images/american_bulldog_152.jpg,1,1,american bulldog,trainval
+/root/clip_diffusion_fewshot_ccds/.claude/worktrees/anchored-ccds-results/data/raw/oxford-iiit-pet/images/american_bulldog_174.jpg,1,1,american bulldog,trainval
+/root/clip_diffusion_fewshot_ccds/.claude/worktrees/anchored-ccds-results/data/raw/oxford-iiit-pet/images/american_bulldog_117.jpg,1,1,american bulldog,trainval
+/root/clip_diffusion_fewshot_ccds/.claude/worktrees/anchored-ccds-results/data/raw/oxford-iiit-pet/images/american_bulldog_119.jpg,1,1,american bulldog,trainval
+/root/clip_diffusion_fewshot_ccds/.claude/worktrees/anchored-ccds-results/data/raw/oxford-iiit-pet/images/american_bulldog_12.jpg,1,1,american bulldog,trainval
+/root/clip_diffusion_fewshot_ccds/.claude/worktrees/anchored-ccds-results/data/raw/oxford-iiit-pet/images/american_bulldog_124.jpg,1,1,american bulldog,trainval
+/root/clip_diffusion_fewshot_ccds/.claude/worktrees/anchored-ccds-results/data/raw/oxford-iiit-pet/images/american_bulldog_201.jpg,1,1,american bulldog,trainval
+/root/clip_diffusion_fewshot_ccds/.claude/worktrees/anchored-ccds-results/data/raw/oxford-iiit-pet/images/american_bulldog_189.jpg,1,1,american bulldog,trainval
+/root/clip_diffusion_fewshot_ccds/.claude/worktrees/anchored-ccds-results/data/raw/oxford-iiit-pet/images/american_bulldog_200.jpg,1,1,american bulldog,trainval
+/root/clip_diffusion_fewshot_ccds/.claude/worktrees/anchored-ccds-results/data/raw/oxford-iiit-pet/images/american_bulldog_177.jpg,1,1,american bulldog,trainval

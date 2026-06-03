@@ -33,12 +33,17 @@ clip:
 
 selection:
   selected_per_class: 10
-  top_m_for_diversity: 30
+  top_m_for_diversity: 40
+  anchor_count: 7
+  quality_weight: 0.75
+  margin_weight: 0.15
+  diversity_weight: 0.10
   strategies:
     - random
     - clip_topk
     - margin_topk
     - ccds
+    - anchored_ccds
 
 classifier:
   backbone: resnet50

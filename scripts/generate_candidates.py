@@ -7,6 +7,7 @@ from pathlib import Path
 sys.path.append(str(Path(__file__).resolve().parents[1] / "src"))
 
 from ccds.config import generation_metadata_path, load_config, resolve_path
+from ccds.datasets import class_map_path
 from ccds.diffusion import generate_candidates
 
 
@@ -21,11 +22,12 @@ def main() -> None:
     cfg = load_config(args.config)
     dataset = cfg["dataset"]
     gen = cfg["generation"]
-    num_classes = int(dataset["num_classes"])
-    class_map_csv = resolve_path(f"data/splits/flowers{num_classes}_class_map.csv")
-    metadata_csv = generation_metadata_path(cfg)
-    output_dir = resolve_path(gen["output_dir"])
+    class_map_csv = resolve_path(class_map_path(dataset))
+    metadata_csv = Path(str(generation_metadata_path(cfg)).format(seed=args.seed))
+    output_dir = resolve_path(str(gen["output_dir"]).format(seed=args.seed))
     num_candidates = args.limit_per_class or int(gen["num_candidates_per_class"])
+    lora_path = gen.get("lora_path")
+    lora_path = resolve_path(str(lora_path).format(seed=args.seed)) if lora_path else None
 
     generate_candidates(
         class_map_csv=class_map_csv,
@@ -41,6 +43,9 @@ def main() -> None:
         seed=args.seed,
         dtype=gen.get("dtype", "float16"),
         resume=not args.no_resume,
+        lora_path=lora_path,
+        lora_scale=float(gen.get("lora_scale", 1.0)),
+        lora_adapter_name=str(gen.get("lora_adapter_name", "domain_lora")),
     )
     print(f"Wrote metadata to {metadata_csv}")
 

@@ -31,9 +31,10 @@ def build_transforms(image_size: int, train: bool, traditional_aug: bool = False
 
 
 class CsvImageDataset(Dataset):
-    def __init__(self, csv_path: str | Path, transform=None):
+    def __init__(self, csv_path: str | Path, transform=None, return_sample_weight: bool = False):
         self.df = pd.read_csv(csv_path)
         self.transform = transform
+        self.return_sample_weight = return_sample_weight
 
     def __len__(self) -> int:
         return len(self.df)
@@ -43,14 +44,25 @@ class CsvImageDataset(Dataset):
         image = Image.open(row["image_path"]).convert("RGB")
         if self.transform is not None:
             image = self.transform(image)
-        return image, int(row["label"])
+        label = int(row["label"])
+        if self.return_sample_weight:
+            weight = float(row["sample_weight"]) if "sample_weight" in self.df.columns else 1.0
+            return image, label, torch.tensor(weight, dtype=torch.float32)
+        return image, label
 
 
-def merge_real_and_generated(real_csv: str | Path, selected_csv: str | Path, out_csv: str | Path) -> Path:
+def merge_real_and_generated(
+    real_csv: str | Path,
+    selected_csv: str | Path,
+    out_csv: str | Path,
+    synthetic_weight: float = 1.0,
+    real_weight: float = 1.0,
+) -> Path:
     real = pd.read_csv(real_csv).copy()
     gen = pd.read_csv(selected_csv).copy()
 
     real["source"] = real.get("source", "real")
+    real["sample_weight"] = float(real_weight)
     label_meta = real[["label", "class_index", "class_name"]].drop_duplicates("label")
 
     if "label" not in gen.columns:
@@ -78,6 +90,7 @@ def merge_real_and_generated(real_csv: str | Path, selected_csv: str | Path, out
     gen_records = gen[["image_path", "label", "class_index", "class_name"]].copy()
     gen_records["original_split"] = "generated"
     gen_records["source"] = "generated"
+    gen_records["sample_weight"] = gen["sample_weight"] if "sample_weight" in gen.columns else float(synthetic_weight)
     if "selection_strategy" in gen.columns:
         gen_records["selection_strategy"] = gen["selection_strategy"]
 

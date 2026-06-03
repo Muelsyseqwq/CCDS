@@ -29,3 +29,26 @@ def test_merge_real_and_generated_preserves_class_metadata(tmp_path):
     assert generated["class_index"].tolist() == [10, 11]
     assert generated["original_split"].tolist() == ["generated", "generated"]
     assert set(merged["source"]) == {"real", "generated"}
+
+
+def test_merge_real_and_generated_writes_sample_weights(tmp_path):
+    real_csv = tmp_path / "real.csv"
+    selected_csv = tmp_path / "selected.csv"
+    out_csv = tmp_path / "merged.csv"
+
+    pd.DataFrame(
+        [
+            {"image_path": "/real_a.png", "label": 0, "class_index": 10, "class_name": "alpha", "original_split": "train"},
+        ]
+    ).to_csv(real_csv, index=False)
+    pd.DataFrame(
+        [
+            {"image_path": "/gen_a.png", "target_label": 0, "target_class": "alpha", "margin_score": 0.5},
+        ]
+    ).to_csv(selected_csv, index=False)
+
+    merge_real_and_generated(real_csv, selected_csv, out_csv, synthetic_weight=0.5, real_weight=1.0)
+    merged = pd.read_csv(out_csv)
+
+    assert merged[merged["source"] == "real"]["sample_weight"].tolist() == [1.0]
+    assert merged[merged["source"] == "generated"]["sample_weight"].tolist() == [0.5]

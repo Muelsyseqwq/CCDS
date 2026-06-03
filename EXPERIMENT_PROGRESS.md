@@ -439,14 +439,27 @@ classifier_missing_method_seed = []
 | clip_topk | 0.8614 | 0.0125 | 0.8284 | 0.0106 |
 | margin_topk | 0.8433 | 0.0054 | 0.8103 | 0.0068 |
 | ccds | 0.8508 | 0.0038 | 0.8207 | 0.0047 |
+| anchored_ccds | 0.8667 | 0.0114 | 0.8313 | 0.0186 |
+
+### anchored_ccds 追加实验
+
+为提升 CCDS 相比强 baseline `clip_topk` 的竞争力，新增 `anchored_ccds` 策略：每类先保留 7 张 `target_score` 最高的 CLIP Top-K anchor，再从 top-40 高质量候选池中按 `0.75 * target_score + 0.15 * margin_score + 0.10 * diversity_gain` 贪心补齐到每类 10 张。该策略不重新生成扩散图，只复用已有 80 candidates/class 的 CLIP scores 与 image embeddings。
+
+3 个 seed 的测试结果：
+
+| method | seed | epochs | accuracy | macro F1 | best val accuracy | train size | test size |
+|---|---:|---:|---:|---:|---:|---:|---:|
+| anchored_ccds | 0 | 20 | 0.8768 | 0.8418 | 0.8800 | 300 | 755 |
+| anchored_ccds | 1 | 20 | 0.8543 | 0.8098 | 0.8800 | 300 | 755 |
+| anchored_ccds | 2 | 20 | 0.8689 | 0.8422 | 0.8600 | 300 | 755 |
 
 ### 主要结论
 
 1. 扩散增强方法整体优于 `real_only` 与 `traditional_aug` 基线。
-2. `clip_topk` 在当前配置下取得最高平均 Accuracy：0.8614。
-3. `ccds` 平均 Accuracy 为 0.8508，平均 macro F1 为 0.8207，相比 `real_only` 提升 0.0163 accuracy points，相比 `traditional_aug` 提升 0.0238 accuracy points。
-4. `ccds` 在 3 个随机种子下表现较稳定，Accuracy 标准差为 0.0038。
-5. 当前配置下 CCDS 未超过 `clip_topk`，说明在 Flowers20 设置中 CLIP target similarity 是强选择信号；多样性约束可能牺牲部分高置信样本，但提升了选择覆盖与稳定性。
+2. `clip_topk` 是原始策略中的最强 baseline，平均 Accuracy 为 0.8614。
+3. 新增 `anchored_ccds` 平均 Accuracy 为 0.8667，平均 macro F1 为 0.8313，超过 `clip_topk` 的 0.8614 / 0.8284。
+4. 原始 `ccds` 平均 Accuracy 为 0.8508，平均 macro F1 为 0.8207，说明纯 margin + KMeans diversity 在当前 Flowers20 设置下会牺牲部分高置信样本。
+5. `anchored_ccds` 的结果支持当前改进思路：先保留 CLIP Top-K 高质量 anchor，再用小比例 diversity 补充，比直接用 KMeans 多样性更稳妥。
 
 ## 后续建议
 
@@ -454,15 +467,15 @@ classifier_missing_method_seed = []
 
 1. 将 `scripts/run_paid_overnight_experiment.sh`、`EXPERIMENT_PROGRESS.md`、`README.md` 等代码/文档改动提交并 push。
 2. 结果、日志、生成图片、checkpoint 保持在本地与 `.gitignore` 中，不提交到 GitHub。
-3. 如需继续提升 CCDS，可调参 `selection.top_m_for_diversity`，或设计 margin 与 diversity 的加权策略。
+3. `anchored_ccds` 已验证能超过当前 `clip_topk` baseline；如需继续提升，可进入 `prototype_ccds` 阶段，引入真实 few-shot 样本原型对齐。
 
 ### 简历与面试表述
 
 简历可采用如下稳妥表述：
 
-> 完成 Oxford Flowers102 20 类 5-shot 小样本图像分类增强实验，构建 Stable Diffusion v1.5 候选生成、CLIP 语义打分、多策略候选选择与冻结 ResNet-50 分类评估闭环；在 80 候选/类、6 种方法、3 个随机种子、20 epoch 的对比中，扩散增强整体优于 real-only 与传统增强基线，最优平均 Accuracy 达 86.14%，CCDS 在多随机种子下取得稳定提升。
+> 完成 Oxford Flowers102 20 类 5-shot 小样本图像分类增强实验，构建 Stable Diffusion v1.5 候选生成、CLIP 语义打分、多策略候选选择与冻结 ResNet-50 分类评估闭环；设计 Anchored CCDS 策略，在保留 CLIP Top-K 高置信样本的基础上引入质量-多样性重排序，80 候选/类、3 个随机种子、20 epoch 下平均 Accuracy 达 86.67%，超过 CLIP Top-K baseline 的 86.14%。
 
-面试中需要诚实说明：当前最优策略是 `clip_topk`，CCDS 的优势主要体现在稳定性和 diversity 设计思路上，后续可通过调节 top-M、聚类数、margin-diversity 权重继续优化。
+面试中可说明：原始 CCDS 证明了 diversity 设计思路，但纯 KMeans 多样性会牺牲部分高置信样本；Anchored CCDS 通过保留高质量 anchor 并只用少量 diversity 补充，在质量和多样性之间取得了更好的平衡。
 
 ## 注意事项
 

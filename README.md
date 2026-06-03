@@ -7,9 +7,13 @@
 - 在 Oxford Flowers102 子集上构建 few-shot 分类任务；
 - 使用 Stable Diffusion v1.5 生成每类候选样本；
 - 实现 CLIP Target Score、Confuser Score、Class-Consistency Margin；
-- 实现 Random、CLIP Top-K、Margin Top-K、CCDS 四种生成样本筛选策略；
+- 实现 Random、CLIP Top-K、Margin Top-K、CCDS、Anchored CCDS、Confusion-Adaptive CCDS 等生成样本筛选策略；
 - 使用 ResNet-50 frozen backbone 进行分类评估；
 - 输出主实验、消融实验和可视化结果。
+
+## 当前新增策略
+
+- `cfrd_mmr`：CLIP-Filtered Real-feature Diverse Selection。CLIP 只做 top-M 语义过滤，最终用真实 few-shot ResNet50 特征接近度和 MMR 类内多样性选样。详见 `docs/cfrd_mmr_strategy.md`。
 
 ## 推荐实验设置
 
@@ -73,9 +77,13 @@ python scripts/score_candidates.py --config configs/flowers20_5shot.yaml
 
 # 6. 筛选生成样本
 python scripts/select_candidates.py --config configs/flowers20_5shot.yaml --strategy ccds
+python scripts/select_candidates.py --config configs/sweeps/pets20_ca2_adaptive_m6_M8_top50_w702010.yaml --strategy confusion_adaptive_ccds
+python scripts/select_candidates.py --config configs/sweeps/pets20_cfrd_mmr_top60_resnet.yaml --strategy cfrd_mmr --prototype-seed 0
 
 # 7. 训练增强方法
 python scripts/train_classifier.py --config configs/flowers20_5shot.yaml --method ccds
+python scripts/train_classifier.py --config configs/sweeps/pets20_ca2_adaptive_m6_M8_top50_w702010.yaml --method confusion_adaptive_ccds --seed 0
+python scripts/train_classifier.py --config configs/sweeps/pets20_cfrd_mmr_top60_resnet.yaml --method cfrd_mmr --seed 0
 ```
 
 ## 当前阶段
@@ -96,6 +104,8 @@ python scripts/run_quick_pipeline.py \
 
 结果现在按 `project_name` 隔离在 `results/<project_name>/` 下，分类器汇总保存在 `results/classifier/all_results.csv`，聚合表保存在 `results/classifier/summary_by_method.csv`。
 
+`confusion_adaptive_ccds`（CA-CCDS）是 `anchored_ccds` 的类别自适应版本：先按每类 CLIP Top-K 的平均 margin 估计类别难度，低 margin 的混淆/困难类别保留更少 CLIP anchor、替换更多样本；高 margin 的容易类别保留更多 CLIP Top-K anchor。因此它实际是在按类别自适应控制与 `clip_topk` 的 overlap。
+
 ## 已完成实验摘要
 
 已完成 `configs/flowers20_5shot.yaml` 下的 Flowers20 5-shot 实验：
@@ -103,7 +113,7 @@ python scripts/run_quick_pipeline.py \
 ```text
 20 类 × 每类 80 张扩散候选图 = 1600 张生成图
 每类选择 10 张生成图用于增强
-6 种方法 × 3 个随机种子 × 20 epoch
+7 种方法 × 3 个随机种子 × 20 epoch
 ```
 
 3 个随机种子的聚合结果如下：
@@ -116,8 +126,9 @@ python scripts/run_quick_pipeline.py \
 | clip_topk | 0.8614 | 0.0125 | 0.8284 | 0.0106 |
 | margin_topk | 0.8433 | 0.0054 | 0.8103 | 0.0068 |
 | ccds | 0.8508 | 0.0038 | 0.8207 | 0.0047 |
+| anchored_ccds | 0.8667 | 0.0114 | 0.8313 | 0.0186 |
 
-结论：扩散增强整体优于 `real_only` 和 `traditional_aug`；当前配置下 `clip_topk` 取得最高平均 Accuracy，CCDS 在多随机种子下取得稳定提升。完整实验报告保存在本地结果快照：
+结论：扩散增强整体优于 `real_only` 和 `traditional_aug`；新增 `anchored_ccds` 在保留每类 7 张 CLIP Top-K 高置信 anchor 的基础上，用质量-多样性重排序补齐样本，当前 3-seed 平均 Accuracy 达到 0.8667，超过原强 baseline `clip_topk` 的 0.8614。完整 overnight 实验报告保存在本地结果快照：
 
 ```text
 results/overnight_runs/paid_overnight_20260601_stage80_resume/stage_80cand_20epoch/experiment_summary.md

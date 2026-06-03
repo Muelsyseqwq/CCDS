@@ -19,6 +19,7 @@ from ccds.config import (
     resolve_path,
     selected_csv_path,
 )
+from ccds.datasets import split_base_name
 from ccds.prompts import build_prompts
 
 
@@ -34,7 +35,21 @@ def main() -> None:
     parser.add_argument("--real-as-generated", action="store_true", help="Use held-out real images as generated-candidate metadata.")
     parser.add_argument("--seed", type=int, default=0)
     parser.add_argument("--epochs", type=int, default=1)
-    parser.add_argument("--augmented-methods", nargs="+", default=["ccds"], choices=["diffusion_random", "clip_topk", "margin_topk", "ccds"])
+    parser.add_argument(
+        "--augmented-methods",
+        nargs="+",
+        default=["ccds"],
+        choices=[
+            "diffusion_random",
+            "clip_topk",
+            "margin_topk",
+            "ccds",
+            "anchored_ccds",
+            "confusion_adaptive_ccds",
+            "same_overlap_random",
+            "replacement_aware_confusion_adaptive_ccds",
+        ],
+    )
     args = parser.parse_args()
 
     cfg = load_config(args.config)
@@ -68,8 +83,7 @@ def main() -> None:
 
 
 def _split_base(cfg: dict, seed: int) -> str:
-    dataset_cfg = cfg["dataset"]
-    return f"flowers{int(dataset_cfg['num_classes'])}_{int(dataset_cfg['shot'])}shot_seed{seed}"
+    return split_base_name(cfg["dataset"], seed)
 
 
 def _check_splits(cfg: dict, seed: int) -> None:

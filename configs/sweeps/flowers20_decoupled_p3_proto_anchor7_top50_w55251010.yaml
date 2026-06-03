@@ -1,0 +1,61 @@
+project_name: ccds_flowers20_5shot_proto_p3_anchor7_top50_w55251010
+seed_list: [0, 1, 2]
+
+dataset:
+  name: flowers102
+  root: data/raw
+  num_classes: 20
+  shot: 5
+  image_size: 224
+  class_indices: []
+
+generation:
+  model_id: runwayml/stable-diffusion-v1-5
+  output_dir: generated/flowers20_sd15
+  metadata_csv: /root/clip_diffusion_fewshot_ccds/results/ccds_flowers20_5shot/generation_metadata.csv
+  num_candidates_per_class: 80
+  image_size: 512
+  num_inference_steps: 30
+  guidance_scale: 7.5
+  batch_size: 1
+  dtype: float16
+  prompts:
+    - "a high-quality photo of a {class_name} flower"
+    - "a close-up photo of a {class_name} flower"
+    - "a realistic photo of a {class_name} flower"
+    - "a detailed photo of a {class_name} flower in natural light"
+  negative_prompt: "low quality, blurry, distorted, unrealistic, text, watermark, multiple objects"
+
+clip:
+  model_name: ViT-B-32
+  pretrained: openai
+  batch_size: 32
+  prompts:
+    - "a photo of a {class_name} flower"
+    - "a close-up image of a {class_name} flower"
+    - "a natural image of a {class_name} flower"
+    - "a clear photo of the flower species {class_name}"
+  score_csv: results/ccds_flowers20_5shot_clip_decoupled/clip_scores.csv
+  embeddings_npz: results/ccds_flowers20_5shot_clip_decoupled/clip_image_embeddings.npz
+
+selection:
+  selected_per_class: 10
+  top_m_for_diversity: 50
+  anchor_count: 7
+  quality_weight: 0.55
+  margin_weight: 0.10
+  prototype_weight: 0.25
+  diversity_weight: 0.10
+  strategies:
+    - prototype_ccds
+
+classifier:
+  backbone: resnet50
+  pretrained: true
+  freeze_backbone: true
+  epochs: 30
+  batch_size: 32
+  lr: 0.001
+  weight_decay: 0.0001
+  num_workers: 4
+  output_dir: results/classifier

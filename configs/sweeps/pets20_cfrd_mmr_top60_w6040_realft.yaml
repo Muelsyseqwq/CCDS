@@ -1,0 +1,69 @@
+project_name: ccds_pets20_cfrd_mmr_top60_w6040_realft
+seed_list:
+- 0
+- 1
+- 2
+
+dataset:
+  name: oxford_iiit_pets
+  root: data/raw
+  num_classes: 20
+  shot: 5
+  image_size: 224
+  class_indices: []
+
+generation:
+  model_id: runwayml/stable-diffusion-v1-5
+  output_dir: generated/pets20_sd15
+  num_candidates_per_class: 80
+  image_size: 512
+  num_inference_steps: 30
+  guidance_scale: 7.5
+  batch_size: 1
+  dtype: float16
+  prompts:
+  - a high-quality photo of a {class_name} pet
+  - a realistic pet photo of a {class_name}
+  - a close-up photo of the pet breed {class_name}
+  - a clear natural photo of a {class_name}
+  negative_prompt: low quality, blurry, distorted, unrealistic, text, watermark, multiple animals
+  metadata_csv: results/ccds_pets20_5shot/generation_metadata.csv
+
+clip:
+  model_name: ViT-B-32
+  pretrained: openai
+  batch_size: 32
+  prompts:
+  - a photo of a {class_name}
+  - a photo of the pet breed {class_name}
+  - a close-up image of a {class_name}
+  - a natural image of a {class_name} pet
+  score_csv: results/ccds_pets20_5shot/clip_scores.csv
+  embeddings_npz: results/ccds_pets20_5shot/clip_image_embeddings.npz
+
+selection:
+  selected_per_class: 10
+  top_m_for_diversity: 40
+  cfrd_clip_top_m: 60
+  cfrd_real_weight: 0.60
+  cfrd_diversity_weight: 0.40
+  cfrd_feature_batch_size: 32
+  cfrd_feature_num_workers: 4
+  cfrd_features_npz: results/ccds_pets20_cfrd_mmr_top60_w6040_realft/features/cfrd_resnet50_seed{seed}.npz
+  strategies:
+  - cfrd_mmr
+
+classifier:
+  backbone: resnet50
+  pretrained: true
+  freeze_backbone: true
+  epochs: 30
+  batch_size: 32
+  lr: 0.001
+  weight_decay: 0.0001
+  real_loss_weight: 1.0
+  synthetic_loss_weight: 1.0
+  real_finetune_epochs: 5
+  real_finetune_lr: 0.0001
+  num_workers: 4
+  output_dir: results/classifier
