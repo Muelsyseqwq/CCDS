@@ -1,0 +1,83 @@
+project_name: ccds_flowers20_5shot_sd15_lora_r4s100_top20_scale07
+seed_list: [0, 1, 2]
+
+dataset:
+  name: flowers102
+  root: data/raw
+  num_classes: 20
+  shot: 5
+  image_size: 224
+  class_indices: []
+
+generation:
+  model_id: runwayml/stable-diffusion-v1-5
+  lora_path: /root/gpufree-data/clip_diffusion_fewshot_ccds_lora/ccds_flowers20_5shot_sd15_lora_r4s100_top20_scale07/lora/seed{seed}/pytorch_lora_weights.safetensors
+  lora_scale: 0.7
+  lora_adapter_name: domain_lora
+  output_dir: /root/gpufree-data/clip_diffusion_fewshot_ccds_lora/generated/flowers20_sd15_lora_r4s100_top20_scale07_seed{seed}
+  metadata_csv: /root/gpufree-data/clip_diffusion_fewshot_ccds_lora/results/ccds_flowers20_5shot_sd15_lora_r4s100_top20_scale07/seed{seed}/generation_metadata.csv
+  num_candidates_per_class: 20
+  image_size: 512
+  num_inference_steps: 30
+  guidance_scale: 7.5
+  batch_size: 1
+  dtype: float16
+  prompts:
+    - "a high-quality photo of a {class_name} flower"
+    - "a close-up photo of a {class_name} flower"
+    - "a realistic photo of a {class_name} flower"
+    - "a detailed photo of a {class_name} flower in natural light"
+  negative_prompt: "low quality, blurry, distorted, unrealistic, text, watermark, multiple objects"
+
+clip:
+  model_name: ViT-B-32
+  pretrained: openai
+  batch_size: 32
+  prompts:
+    - "a photo of a {class_name} flower"
+    - "a close-up image of a {class_name} flower"
+    - "a natural image of a {class_name} flower"
+    - "a clear photo of the flower species {class_name}"
+  score_csv: /root/gpufree-data/clip_diffusion_fewshot_ccds_lora/results/ccds_flowers20_5shot_sd15_lora_r4s100_top20_scale07/seed{seed}/clip_scores.csv
+  embeddings_npz: /root/gpufree-data/clip_diffusion_fewshot_ccds_lora/results/ccds_flowers20_5shot_sd15_lora_r4s100_top20_scale07/seed{seed}/clip_image_embeddings.npz
+
+selection:
+  selected_per_class: 10
+  top_m_for_diversity: 20
+  anchor_count: 7
+  quality_weight: 0.75
+  margin_weight: 0.15
+  diversity_weight: 0.10
+  output_dir: /root/gpufree-data/clip_diffusion_fewshot_ccds_lora/results/ccds_flowers20_5shot_sd15_lora_r4s100_top20_scale07/seed{seed}/selected
+  strategies:
+    - clip_topk
+    - anchored_ccds
+
+lora:
+  output_dir: /root/gpufree-data/clip_diffusion_fewshot_ccds_lora/ccds_flowers20_5shot_sd15_lora_r4s100_top20_scale07/lora/seed{seed}
+  rank: 4
+  learning_rate: 0.00001
+  max_train_steps: 100
+  train_batch_size: 1
+  gradient_accumulation_steps: 4
+  resolution: 512
+  mixed_precision: bf16
+  gradient_checkpointing: true
+  train_text_encoder: false
+  caption_template: "a photo of a {class_name} flower"
+  weight_name: pytorch_lora_weights.safetensors
+
+classifier:
+  backbone: resnet50
+  pretrained: true
+  freeze_backbone: true
+  epochs: 30
+  batch_size: 32
+  lr: 0.001
+  weight_decay: 0.0001
+  real_loss_weight: 1.0
+  synthetic_loss_weight: 1.0
+  real_finetune_epochs: 5
+  real_finetune_lr: 0.0001
+  num_workers: 4
+  output_dir: results/classifier

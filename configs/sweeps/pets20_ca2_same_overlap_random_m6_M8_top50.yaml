@@ -1,0 +1,66 @@
+project_name: ccds_pets20_ca2_same_overlap_random_m6_M8_top50
+seed_list:
+- 0
+- 1
+- 2
+dataset:
+  name: oxford_iiit_pets
+  root: data/raw
+  num_classes: 20
+  shot: 5
+  image_size: 224
+  class_indices: []
+generation:
+  model_id: runwayml/stable-diffusion-v1-5
+  output_dir: generated/pets20_sd15
+  num_candidates_per_class: 80
+  image_size: 512
+  num_inference_steps: 30
+  guidance_scale: 7.5
+  batch_size: 1
+  dtype: float16
+  prompts:
+  - a high-quality photo of a {class_name} pet
+  - a realistic pet photo of a {class_name}
+  - a close-up photo of the pet breed {class_name}
+  - a clear natural photo of a {class_name}
+  negative_prompt: low quality, blurry, distorted, unrealistic, text, watermark, multiple
+    animals
+  metadata_csv: results/ccds_pets20_5shot/generation_metadata.csv
+clip:
+  model_name: ViT-B-32
+  pretrained: openai
+  batch_size: 32
+  prompts:
+  - a photo of a {class_name}
+  - a photo of the pet breed {class_name}
+  - a close-up image of a {class_name}
+  - a natural image of a {class_name} pet
+  score_csv: results/ccds_pets20_5shot/clip_scores.csv
+  embeddings_npz: results/ccds_pets20_5shot/clip_image_embeddings.npz
+selection:
+  selected_per_class: 10
+  top_m_for_diversity: 50
+  prototype_top_m: 30
+  anchor_count: 7
+  quality_weight: 0.7
+  margin_weight: 0.2
+  prototype_weight: 0.2
+  diversity_weight: 0.1
+  strategies:
+  - same_overlap_random
+  adaptive_anchor_min_count: 6
+  adaptive_anchor_max_count: 8
+  replacement_min_count: 1
+  replacement_max_count: 3
+  same_overlap_reference_csv: results/ccds_pets20_ca2_adaptive_m6_M8_top50_w702010/selected/selected_confusion_adaptive_ccds.csv
+classifier:
+  backbone: resnet50
+  pretrained: true
+  freeze_backbone: true
+  epochs: 30
+  batch_size: 32
+  lr: 0.001
+  weight_decay: 0.0001
+  num_workers: 4
+  output_dir: results/classifier
