@@ -6,6 +6,38 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 This repository implements CCDS (CLIP Class-Consistency and Diversity Selection), a few-shot image classification augmentation pipeline for an Oxford Flowers102 subset. The pipeline generates class-conditioned images with Stable Diffusion v1.5, scores candidates with CLIP target/confuser similarities and class-consistency margin, selects generated samples with several strategies, then evaluates them with a frozen-backbone ResNet-50 classifier.
 
+## Current best result and delivery focus
+
+The latest best-result delivery files have been merged from the worktree into this main folder. Current best result:
+
+- Config: `configs/sweeps/pets20_160_sp80_core_realft.yaml`
+- Dataset: Oxford-IIIT Pets20, 20-way 5-shot
+- Project: `ccds_pets20_160_sp80_core_realft`
+- Method: `margin_topk`
+- Scale: 160 generated candidates/class, 80 selected/class
+- Training: ResNet-50 frozen backbone, 30 epochs real+synthetic + 5 epochs real-only fine-tuning
+- 3-seed result: 0.9093050648 accuracy / 0.9086824557 macro F1
+
+Important artifact split:
+
+- CLIP scores, selected CSVs, merged train CSVs, and final research summaries are under this main folder's `results/`.
+- Classifier summaries, metrics, and checkpoints for the best result remain in `/root/gpufree-data/clip_diffusion_fewshot_ccds_results/classifier/ccds_pets20_160_sp80_core_realft/margin_topk/seed*/`.
+
+Use lightweight verification by default:
+
+```bash
+bash scripts/reproduce_best_pets20_margin_topk.sh
+PYTHONPATH=src /root/clip_diffusion_fewshot_ccds/.venv/bin/python scripts/verify_best_pets20_artifacts.py --write-report
+PYTHONPATH=src /root/clip_diffusion_fewshot_ccds/.venv/bin/python scripts/summarize_best_pets20_results.py
+```
+
+Do not rerun Stable Diffusion generation, CLIP scoring, or 30+5 epoch classifier training unless the user explicitly asks. The reproduction script only retrains when `RUN_HEAVY=1` is set.
+
+Environment notes:
+
+- `requirements.txt` is the human-maintained dependency list.
+- `requirements-lock.txt` is a frozen snapshot from the known working virtualenv. GPU/CUDA binary compatibility still depends on the host driver/platform.
+
 ## Environment and dependencies
 
 ```bash

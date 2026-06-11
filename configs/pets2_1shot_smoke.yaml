@@ -1,0 +1,71 @@
+project_name: ccds_pets2_1shot_smoke
+seed_list: [0]
+
+dataset:
+  name: oxford_iiit_pets
+  root: data/raw
+  num_classes: 2
+  shot: 1
+  image_size: 224
+  class_indices: []
+
+generation:
+  model_id: runwayml/stable-diffusion-v1-5
+  output_dir: generated/pets2_sd15
+  num_candidates_per_class: 2
+  image_size: 512
+  num_inference_steps: 20
+  guidance_scale: 7.5
+  batch_size: 1
+  dtype: float16
+  prompts:
+    - "a high-quality photo of a {class_name} pet"
+    - "a realistic photo of a {class_name}"
+    - "a close-up photo of the pet breed {class_name}"
+    - "a clear natural photo of a {class_name}"
+  negative_prompt: "low quality, blurry, distorted, unrealistic, text, watermark, multiple animals"
+
+clip:
+  model_name: ViT-B-32
+  pretrained: openai
+  batch_size: 32
+  prompts:
+    - "a photo of a {class_name}"
+    - "a photo of the pet breed {class_name}"
+    - "a close-up image of a {class_name}"
+    - "a natural image of a {class_name} pet"
+
+selection:
+  selected_per_class: 2
+  top_m_for_diversity: 2
+  prototype_top_m: 2
+  anchor_count: 1
+  adaptive_anchor_min_count: 1
+  adaptive_anchor_max_count: 1
+  quality_weight: 0.75
+  margin_weight: 0.15
+  prototype_weight: 0.20
+  diversity_weight: 0.10
+  strategies:
+    - random
+    - clip_topk
+    - margin_topk
+    - ccds
+    - anchored_ccds
+    - confusion_adaptive_ccds
+    - same_overlap_random
+    - replacement_aware_confusion_adaptive_ccds
+  same_overlap_reference_strategy: confusion_adaptive_ccds
+  replacement_min_count: 1
+  replacement_max_count: 1
+
+classifier:
+  backbone: resnet50
+  pretrained: true
+  freeze_backbone: true
+  epochs: 1
+  batch_size: 16
+  lr: 0.001
+  weight_decay: 0.0001
+  num_workers: 2
+  output_dir: results/classifier

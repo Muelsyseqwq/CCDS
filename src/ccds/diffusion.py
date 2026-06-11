@@ -27,11 +27,24 @@ def generate_candidates(
     dtype: str = "float16",
     resume: bool = True,
     allow_untracked_existing: bool = False,
+    lora_path: str | Path | None = None,
+    lora_scale: float = 1.0,
+    lora_adapter_name: str = "domain_lora",
 ) -> None:
     device = get_device()
     torch_dtype = torch.float16 if dtype == "float16" and device.type == "cuda" else torch.float32
     pipe = StableDiffusionPipeline.from_pretrained(model_id, torch_dtype=torch_dtype, safety_checker=None)
     pipe = pipe.to(device)
+    if lora_path:
+        lora_path = Path(lora_path)
+        if not lora_path.exists():
+            raise FileNotFoundError(f"LoRA weights not found: {lora_path}")
+        if lora_path.is_file():
+            pipe.load_lora_weights(str(lora_path.parent), weight_name=lora_path.name, adapter_name=lora_adapter_name)
+        else:
+            pipe.load_lora_weights(str(lora_path), adapter_name=lora_adapter_name)
+        if hasattr(pipe, "set_adapters"):
+            pipe.set_adapters([lora_adapter_name], adapter_weights=[float(lora_scale)])
     if hasattr(pipe, "enable_attention_slicing"):
         pipe.enable_attention_slicing()
     if hasattr(pipe, "enable_vae_slicing"):
@@ -42,7 +55,18 @@ def generate_candidates(
     metadata_csv = Path(metadata_csv)
     previous_records = _load_previous_records(metadata_csv) if resume else {}
     records = []
-    fingerprint = _config_fingerprint(model_id, prompt_templates, negative_prompt, image_size, num_inference_steps, guidance_scale, seed, dtype)
+    fingerprint = _config_fingerprint(
+        model_id,
+        prompt_templates,
+        negative_prompt,
+        image_size,
+        num_inference_steps,
+        guidance_scale,
+        seed,
+        dtype,
+        str(lora_path) if lora_path else "",
+        lora_scale,
+    )
     generator = torch.Generator(device=device).manual_seed(seed) if device.type == "cuda" else torch.Generator().manual_seed(seed)
 
     for _, row in tqdm(class_map.iterrows(), total=len(class_map), desc="Generating classes"):
@@ -65,7 +89,22 @@ def generate_candidates(
                     old_record["reused_existing"] = True
                     records.append(old_record)
                     continue
-                records.append(_record(image_path, class_name, label, prompt, seed, model_id, guidance_scale, num_inference_steps, fingerprint, reused_existing=True))
+                records.append(
+                    _record(
+                        image_path,
+                        class_name,
+                        label,
+                        prompt,
+                        seed,
+                        model_id,
+                        guidance_scale,
+                        num_inference_steps,
+                        fingerprint,
+                        reused_existing=True,
+                        lora_path=str(lora_path) if lora_path else "",
+                        lora_scale=lora_scale,
+                    )
+                )
                 continue
             seed_everything(seed + label * 100000 + i)
             image = pipe(
@@ -78,7 +117,22 @@ def generate_candidates(
                 generator=generator,
             ).images[0]
             image.save(image_path)
-            records.append(_record(image_path, class_name, label, prompt, seed, model_id, guidance_scale, num_inference_steps, fingerprint, reused_existing=False))
+            records.append(
+                _record(
+                    image_path,
+                    class_name,
+                    label,
+                    prompt,
+                    seed,
+                    model_id,
+                    guidance_scale,
+                    num_inference_steps,
+                    fingerprint,
+                    reused_existing=False,
+                    lora_path=str(lora_path) if lora_path else "",
+                    lora_scale=lora_scale,
+                )
+            )
 
     ensure_dir(metadata_csv.parent)
     pd.DataFrame(records).to_csv(metadata_csv, index=False)
@@ -95,6 +149,8 @@ def _record(
     steps: int,
     config_fingerprint: str,
     reused_existing: bool,
+    lora_path: str = "",
+    lora_scale: float = 1.0,
 ) -> dict:
     return {
         "image_path": str(image_path.resolve()),
@@ -103,6 +159,8 @@ def _record(
         "prompt": prompt,
         "seed": seed,
         "model": model_id,
+        "lora_path": lora_path,
+        "lora_scale": lora_scale,
         "guidance_scale": guidance,
         "num_steps": steps,
         "config_fingerprint": config_fingerprint,
@@ -128,6 +186,8 @@ def _config_fingerprint(
     guidance_scale: float,
     seed: int,
     dtype: str,
+    lora_path: str = "",
+    lora_scale: float = 1.0,
 ) -> str:
     text = "|".join(
         [
@@ -139,6 +199,8 @@ def _config_fingerprint(
             str(guidance_scale),
             str(seed),
             dtype,
+            lora_path,
+            str(lora_scale),
         ]
     )
     return hashlib.sha256(text.encode("utf-8")).hexdigest()[:16]

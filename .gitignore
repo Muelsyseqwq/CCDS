@@ -23,8 +23,8 @@ results/
 *.log
 wandb/
 
-# Claude Code local settings
-.claude/settings.local.json
+# Claude Code local files
+.claude/
 
 # OS / IDE
 .DS_Store

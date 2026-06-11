@@ -1,0 +1,101 @@
+image_path,label,class_index,class_name,original_split
+/root/clip_diffusion_fewshot_ccds/.claude/worktrees/anchored-ccds-results/data/raw/oxford-iiit-pet/images/Abyssinian_121.jpg,0,0,abyssinian,trainval
+/root/clip_diffusion_fewshot_ccds/.claude/worktrees/anchored-ccds-results/data/raw/oxford-iiit-pet/images/Abyssinian_108.jpg,0,0,abyssinian,trainval
+/root/clip_diffusion_fewshot_ccds/.claude/worktrees/anchored-ccds-results/data/raw/oxford-iiit-pet/images/Abyssinian_110.jpg,0,0,abyssinian,trainval
+/root/clip_diffusion_fewshot_ccds/.claude/worktrees/anchored-ccds-results/data/raw/oxford-iiit-pet/images/Abyssinian_107.jpg,0,0,abyssinian,trainval
+/root/clip_diffusion_fewshot_ccds/.claude/worktrees/anchored-ccds-results/data/raw/oxford-iiit-pet/images/Abyssinian_144.jpg,0,0,abyssinian,trainval
+/root/clip_diffusion_fewshot_ccds/.claude/worktrees/anchored-ccds-results/data/raw/oxford-iiit-pet/images/american_bulldog_183.jpg,1,1,american bulldog,trainval
+/root/clip_diffusion_fewshot_ccds/.claude/worktrees/anchored-ccds-results/data/raw/oxford-iiit-pet/images/american_bulldog_152.jpg,1,1,american bulldog,trainval
+/root/clip_diffusion_fewshot_ccds/.claude/worktrees/anchored-ccds-results/data/raw/oxford-iiit-pet/images/american_bulldog_174.jpg,1,1,american bulldog,trainval
+/root/clip_diffusion_fewshot_ccds/.claude/worktrees/anchored-ccds-results/data/raw/oxford-iiit-pet/images/american_bulldog_117.jpg,1,1,american bulldog,trainval
+/root/clip_diffusion_fewshot_ccds/.claude/worktrees/anchored-ccds-results/data/raw/oxford-iiit-pet/images/american_bulldog_119.jpg,1,1,american bulldog,trainval
+/root/clip_diffusion_fewshot_ccds/.claude/worktrees/anchored-ccds-results/data/raw/oxford-iiit-pet/images/american_pit_bull_terrier_121.jpg,2,2,american pit bull terrier,trainval
+/root/clip_diffusion_fewshot_ccds/.claude/worktrees/anchored-ccds-results/data/raw/oxford-iiit-pet/images/american_pit_bull_terrier_172.jpg,2,2,american pit bull terrier,trainval
+/root/clip_diffusion_fewshot_ccds/.claude/worktrees/anchored-ccds-results/data/raw/oxford-iiit-pet/images/american_pit_bull_terrier_146.jpg,2,2,american pit bull terrier,trainval
+/root/clip_diffusion_fewshot_ccds/.claude/worktrees/anchored-ccds-results/data/raw/oxford-iiit-pet/images/american_pit_bull_terrier_171.jpg,2,2,american pit bull terrier,trainval
+/root/clip_diffusion_fewshot_ccds/.claude/worktrees/anchored-ccds-results/data/raw/oxford-iiit-pet/images/american_pit_bull_terrier_110.jpg,2,2,american pit bull terrier,trainval
+/root/clip_diffusion_fewshot_ccds/.claude/worktrees/anchored-ccds-results/data/raw/oxford-iiit-pet/images/basset_hound_154.jpg,3,3,basset hound,trainval
+/root/clip_diffusion_fewshot_ccds/.claude/worktrees/anchored-ccds-results/data/raw/oxford-iiit-pet/images/basset_hound_130.jpg,3,3,basset hound,trainval
+/root/clip_diffusion_fewshot_ccds/.claude/worktrees/anchored-ccds-results/data/raw/oxford-iiit-pet/images/basset_hound_106.jpg,3,3,basset hound,trainval
+/root/clip_diffusion_fewshot_ccds/.claude/worktrees/anchored-ccds-results/data/raw/oxford-iiit-pet/images/basset_hound_144.jpg,3,3,basset hound,trainval
+/root/clip_diffusion_fewshot_ccds/.claude/worktrees/anchored-ccds-results/data/raw/oxford-iiit-pet/images/basset_hound_163.jpg,3,3,basset hound,trainval
+/root/clip_diffusion_fewshot_ccds/.claude/worktrees/anchored-ccds-results/data/raw/oxford-iiit-pet/images/beagle_175.jpg,4,4,beagle,trainval
+/root/clip_diffusion_fewshot_ccds/.claude/worktrees/anchored-ccds-results/data/raw/oxford-iiit-pet/images/beagle_178.jpg,4,4,beagle,trainval
+/root/clip_diffusion_fewshot_ccds/.claude/worktrees/anchored-ccds-results/data/raw/oxford-iiit-pet/images/beagle_174.jpg,4,4,beagle,trainval
+/root/clip_diffusion_fewshot_ccds/.claude/worktrees/anchored-ccds-results/data/raw/oxford-iiit-pet/images/beagle_131.jpg,4,4,beagle,trainval
+/root/clip_diffusion_fewshot_ccds/.claude/worktrees/anchored-ccds-results/data/raw/oxford-iiit-pet/images/beagle_180.jpg,4,4,beagle,trainval
+/root/clip_diffusion_fewshot_ccds/.claude/worktrees/anchored-ccds-results/data/raw/oxford-iiit-pet/images/Bengal_132.jpg,5,5,bengal,trainval
+/root/clip_diffusion_fewshot_ccds/.claude/worktrees/anchored-ccds-results/data/raw/oxford-iiit-pet/images/Bengal_176.jpg,5,5,bengal,trainval
+/root/clip_diffusion_fewshot_ccds/.claude/worktrees/anchored-ccds-results/data/raw/oxford-iiit-pet/images/Bengal_178.jpg,5,5,bengal,trainval
+/root/clip_diffusion_fewshot_ccds/.claude/worktrees/anchored-ccds-results/data/raw/oxford-iiit-pet/images/Bengal_166.jpg,5,5,bengal,trainval
+/root/clip_diffusion_fewshot_ccds/.claude/worktrees/anchored-ccds-results/data/raw/oxford-iiit-pet/images/Bengal_138.jpg,5,5,bengal,trainval
+/root/clip_diffusion_fewshot_ccds/.claude/worktrees/anchored-ccds-results/data/raw/oxford-iiit-pet/images/Birman_112.jpg,6,6,birman,trainval
+/root/clip_diffusion_fewshot_ccds/.claude/worktrees/anchored-ccds-results/data/raw/oxford-iiit-pet/images/Birman_116.jpg,6,6,birman,trainval
+/root/clip_diffusion_fewshot_ccds/.claude/worktrees/anchored-ccds-results/data/raw/oxford-iiit-pet/images/Birman_174.jpg,6,6,birman,trainval
+/root/clip_diffusion_fewshot_ccds/.claude/worktrees/anchored-ccds-results/data/raw/oxford-iiit-pet/images/Birman_117.jpg,6,6,birman,trainval
+/root/clip_diffusion_fewshot_ccds/.claude/worktrees/anchored-ccds-results/data/raw/oxford-iiit-pet/images/Birman_108.jpg,6,6,birman,trainval
+/root/clip_diffusion_fewshot_ccds/.claude/worktrees/anchored-ccds-results/data/raw/oxford-iiit-pet/images/Bombay_161.jpg,7,7,bombay,trainval
+/root/clip_diffusion_fewshot_ccds/.claude/worktrees/anchored-ccds-results/data/raw/oxford-iiit-pet/images/Bombay_163.jpg,7,7,bombay,trainval
+/root/clip_diffusion_fewshot_ccds/.claude/worktrees/anchored-ccds-results/data/raw/oxford-iiit-pet/images/Bombay_171.jpg,7,7,bombay,trainval
+/root/clip_diffusion_fewshot_ccds/.claude/worktrees/anchored-ccds-results/data/raw/oxford-iiit-pet/images/Bombay_159.jpg,7,7,bombay,trainval
+/root/clip_diffusion_fewshot_ccds/.claude/worktrees/anchored-ccds-results/data/raw/oxford-iiit-pet/images/Bombay_154.jpg,7,7,bombay,trainval
+/root/clip_diffusion_fewshot_ccds/.claude/worktrees/anchored-ccds-results/data/raw/oxford-iiit-pet/images/boxer_16.jpg,8,8,boxer,trainval
+/root/clip_diffusion_fewshot_ccds/.claude/worktrees/anchored-ccds-results/data/raw/oxford-iiit-pet/images/boxer_141.jpg,8,8,boxer,trainval
+/root/clip_diffusion_fewshot_ccds/.claude/worktrees/anchored-ccds-results/data/raw/oxford-iiit-pet/images/boxer_176.jpg,8,8,boxer,trainval
+/root/clip_diffusion_fewshot_ccds/.claude/worktrees/anchored-ccds-results/data/raw/oxford-iiit-pet/images/boxer_18.jpg,8,8,boxer,trainval
+/root/clip_diffusion_fewshot_ccds/.claude/worktrees/anchored-ccds-results/data/raw/oxford-iiit-pet/images/boxer_101.jpg,8,8,boxer,trainval
+/root/clip_diffusion_fewshot_ccds/.claude/worktrees/anchored-ccds-results/data/raw/oxford-iiit-pet/images/British_Shorthair_182.jpg,9,9,british shorthair,trainval
+/root/clip_diffusion_fewshot_ccds/.claude/worktrees/anchored-ccds-results/data/raw/oxford-iiit-pet/images/British_Shorthair_169.jpg,9,9,british shorthair,trainval
+/root/clip_diffusion_fewshot_ccds/.claude/worktrees/anchored-ccds-results/data/raw/oxford-iiit-pet/images/British_Shorthair_104.jpg,9,9,british shorthair,trainval
+/root/clip_diffusion_fewshot_ccds/.claude/worktrees/anchored-ccds-results/data/raw/oxford-iiit-pet/images/British_Shorthair_114.jpg,9,9,british shorthair,trainval
+/root/clip_diffusion_fewshot_ccds/.claude/worktrees/anchored-ccds-results/data/raw/oxford-iiit-pet/images/British_Shorthair_155.jpg,9,9,british shorthair,trainval
+/root/clip_diffusion_fewshot_ccds/.claude/worktrees/anchored-ccds-results/data/raw/oxford-iiit-pet/images/chihuahua_187.jpg,10,10,chihuahua,trainval
+/root/clip_diffusion_fewshot_ccds/.claude/worktrees/anchored-ccds-results/data/raw/oxford-iiit-pet/images/chihuahua_144.jpg,10,10,chihuahua,trainval
+/root/clip_diffusion_fewshot_ccds/.claude/worktrees/anchored-ccds-results/data/raw/oxford-iiit-pet/images/chihuahua_180.jpg,10,10,chihuahua,trainval
+/root/clip_diffusion_fewshot_ccds/.claude/worktrees/anchored-ccds-results/data/raw/oxford-iiit-pet/images/chihuahua_159.jpg,10,10,chihuahua,trainval
+/root/clip_diffusion_fewshot_ccds/.claude/worktrees/anchored-ccds-results/data/raw/oxford-iiit-pet/images/chihuahua_109.jpg,10,10,chihuahua,trainval
+/root/clip_diffusion_fewshot_ccds/.claude/worktrees/anchored-ccds-results/data/raw/oxford-iiit-pet/images/Egyptian_Mau_11.jpg,11,11,egyptian mau,trainval
+/root/clip_diffusion_fewshot_ccds/.claude/worktrees/anchored-ccds-results/data/raw/oxford-iiit-pet/images/Egyptian_Mau_15.jpg,11,11,egyptian mau,trainval
+/root/clip_diffusion_fewshot_ccds/.claude/worktrees/anchored-ccds-results/data/raw/oxford-iiit-pet/images/Egyptian_Mau_126.jpg,11,11,egyptian mau,trainval
+/root/clip_diffusion_fewshot_ccds/.claude/worktrees/anchored-ccds-results/data/raw/oxford-iiit-pet/images/Egyptian_Mau_116.jpg,11,11,egyptian mau,trainval
+/root/clip_diffusion_fewshot_ccds/.claude/worktrees/anchored-ccds-results/data/raw/oxford-iiit-pet/images/Egyptian_Mau_147.jpg,11,11,egyptian mau,trainval
+/root/clip_diffusion_fewshot_ccds/.claude/worktrees/anchored-ccds-results/data/raw/oxford-iiit-pet/images/english_cocker_spaniel_150.jpg,12,12,english cocker spaniel,trainval
+/root/clip_diffusion_fewshot_ccds/.claude/worktrees/anchored-ccds-results/data/raw/oxford-iiit-pet/images/english_cocker_spaniel_183.jpg,12,12,english cocker spaniel,trainval
+/root/clip_diffusion_fewshot_ccds/.claude/worktrees/anchored-ccds-results/data/raw/oxford-iiit-pet/images/english_cocker_spaniel_171.jpg,12,12,english cocker spaniel,trainval
+/root/clip_diffusion_fewshot_ccds/.claude/worktrees/anchored-ccds-results/data/raw/oxford-iiit-pet/images/english_cocker_spaniel_181.jpg,12,12,english cocker spaniel,trainval
+/root/clip_diffusion_fewshot_ccds/.claude/worktrees/anchored-ccds-results/data/raw/oxford-iiit-pet/images/english_cocker_spaniel_153.jpg,12,12,english cocker spaniel,trainval
+/root/clip_diffusion_fewshot_ccds/.claude/worktrees/anchored-ccds-results/data/raw/oxford-iiit-pet/images/english_setter_157.jpg,13,13,english setter,trainval
+/root/clip_diffusion_fewshot_ccds/.claude/worktrees/anchored-ccds-results/data/raw/oxford-iiit-pet/images/english_setter_189.jpg,13,13,english setter,trainval
+/root/clip_diffusion_fewshot_ccds/.claude/worktrees/anchored-ccds-results/data/raw/oxford-iiit-pet/images/english_setter_127.jpg,13,13,english setter,trainval
+/root/clip_diffusion_fewshot_ccds/.claude/worktrees/anchored-ccds-results/data/raw/oxford-iiit-pet/images/english_setter_106.jpg,13,13,english setter,trainval
+/root/clip_diffusion_fewshot_ccds/.claude/worktrees/anchored-ccds-results/data/raw/oxford-iiit-pet/images/english_setter_154.jpg,13,13,english setter,trainval
+/root/clip_diffusion_fewshot_ccds/.claude/worktrees/anchored-ccds-results/data/raw/oxford-iiit-pet/images/german_shorthaired_143.jpg,14,14,german shorthaired,trainval
+/root/clip_diffusion_fewshot_ccds/.claude/worktrees/anchored-ccds-results/data/raw/oxford-iiit-pet/images/german_shorthaired_138.jpg,14,14,german shorthaired,trainval
+/root/clip_diffusion_fewshot_ccds/.claude/worktrees/anchored-ccds-results/data/raw/oxford-iiit-pet/images/german_shorthaired_107.jpg,14,14,german shorthaired,trainval
+/root/clip_diffusion_fewshot_ccds/.claude/worktrees/anchored-ccds-results/data/raw/oxford-iiit-pet/images/german_shorthaired_179.jpg,14,14,german shorthaired,trainval
+/root/clip_diffusion_fewshot_ccds/.claude/worktrees/anchored-ccds-results/data/raw/oxford-iiit-pet/images/german_shorthaired_181.jpg,14,14,german shorthaired,trainval
+/root/clip_diffusion_fewshot_ccds/.claude/worktrees/anchored-ccds-results/data/raw/oxford-iiit-pet/images/great_pyrenees_106.jpg,15,15,great pyrenees,trainval
+/root/clip_diffusion_fewshot_ccds/.claude/worktrees/anchored-ccds-results/data/raw/oxford-iiit-pet/images/great_pyrenees_167.jpg,15,15,great pyrenees,trainval
+/root/clip_diffusion_fewshot_ccds/.claude/worktrees/anchored-ccds-results/data/raw/oxford-iiit-pet/images/great_pyrenees_157.jpg,15,15,great pyrenees,trainval
+/root/clip_diffusion_fewshot_ccds/.claude/worktrees/anchored-ccds-results/data/raw/oxford-iiit-pet/images/great_pyrenees_112.jpg,15,15,great pyrenees,trainval
+/root/clip_diffusion_fewshot_ccds/.claude/worktrees/anchored-ccds-results/data/raw/oxford-iiit-pet/images/great_pyrenees_169.jpg,15,15,great pyrenees,trainval
+/root/clip_diffusion_fewshot_ccds/.claude/worktrees/anchored-ccds-results/data/raw/oxford-iiit-pet/images/havanese_161.jpg,16,16,havanese,trainval
+/root/clip_diffusion_fewshot_ccds/.claude/worktrees/anchored-ccds-results/data/raw/oxford-iiit-pet/images/havanese_173.jpg,16,16,havanese,trainval
+/root/clip_diffusion_fewshot_ccds/.claude/worktrees/anchored-ccds-results/data/raw/oxford-iiit-pet/images/havanese_132.jpg,16,16,havanese,trainval
+/root/clip_diffusion_fewshot_ccds/.claude/worktrees/anchored-ccds-results/data/raw/oxford-iiit-pet/images/havanese_167.jpg,16,16,havanese,trainval
+/root/clip_diffusion_fewshot_ccds/.claude/worktrees/anchored-ccds-results/data/raw/oxford-iiit-pet/images/havanese_146.jpg,16,16,havanese,trainval
+/root/clip_diffusion_fewshot_ccds/.claude/worktrees/anchored-ccds-results/data/raw/oxford-iiit-pet/images/japanese_chin_110.jpg,17,17,japanese chin,trainval
+/root/clip_diffusion_fewshot_ccds/.claude/worktrees/anchored-ccds-results/data/raw/oxford-iiit-pet/images/japanese_chin_117.jpg,17,17,japanese chin,trainval
+/root/clip_diffusion_fewshot_ccds/.claude/worktrees/anchored-ccds-results/data/raw/oxford-iiit-pet/images/japanese_chin_143.jpg,17,17,japanese chin,trainval
+/root/clip_diffusion_fewshot_ccds/.claude/worktrees/anchored-ccds-results/data/raw/oxford-iiit-pet/images/japanese_chin_106.jpg,17,17,japanese chin,trainval
+/root/clip_diffusion_fewshot_ccds/.claude/worktrees/anchored-ccds-results/data/raw/oxford-iiit-pet/images/japanese_chin_140.jpg,17,17,japanese chin,trainval
+/root/clip_diffusion_fewshot_ccds/.claude/worktrees/anchored-ccds-results/data/raw/oxford-iiit-pet/images/keeshond_165.jpg,18,18,keeshond,trainval
+/root/clip_diffusion_fewshot_ccds/.claude/worktrees/anchored-ccds-results/data/raw/oxford-iiit-pet/images/keeshond_16.jpg,18,18,keeshond,trainval
+/root/clip_diffusion_fewshot_ccds/.claude/worktrees/anchored-ccds-results/data/raw/oxford-iiit-pet/images/keeshond_167.jpg,18,18,keeshond,trainval
+/root/clip_diffusion_fewshot_ccds/.claude/worktrees/anchored-ccds-results/data/raw/oxford-iiit-pet/images/keeshond_128.jpg,18,18,keeshond,trainval
+/root/clip_diffusion_fewshot_ccds/.claude/worktrees/anchored-ccds-results/data/raw/oxford-iiit-pet/images/keeshond_151.jpg,18,18,keeshond,trainval
+/root/clip_diffusion_fewshot_ccds/.claude/worktrees/anchored-ccds-results/data/raw/oxford-iiit-pet/images/leonberger_188.jpg,19,19,leonberger,trainval
+/root/clip_diffusion_fewshot_ccds/.claude/worktrees/anchored-ccds-results/data/raw/oxford-iiit-pet/images/leonberger_147.jpg,19,19,leonberger,trainval
+/root/clip_diffusion_fewshot_ccds/.claude/worktrees/anchored-ccds-results/data/raw/oxford-iiit-pet/images/leonberger_173.jpg,19,19,leonberger,trainval
+/root/clip_diffusion_fewshot_ccds/.claude/worktrees/anchored-ccds-results/data/raw/oxford-iiit-pet/images/leonberger_146.jpg,19,19,leonberger,trainval
+/root/clip_diffusion_fewshot_ccds/.claude/worktrees/anchored-ccds-results/data/raw/oxford-iiit-pet/images/leonberger_166.jpg,19,19,leonberger,trainval
