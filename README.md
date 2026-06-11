@@ -1,27 +1,28 @@
-# CCDS: CLIP-Guided Selection of Diffusion Samples for Few-Shot Image Classification
+# CLIP-Guided Diffusion Sample Selection for Few-Shot Image Classification
 
-This repository contains a research-oriented implementation of a diffusion-based data augmentation pipeline for few-shot image classification. The project studies how generated images should be selected before they are added to a low-shot training set. The main pipeline generates class-conditioned images with Stable Diffusion, scores the generated candidates with CLIP, selects synthetic samples using several confidence/diversity criteria, and evaluates them with a frozen-backbone ResNet-50 classifier.
+This repository contains a research-oriented implementation of diffusion-based data augmentation for few-shot image classification. The project originated from CCDS (CLIP Class-Consistency and Diversity Selection), and has since grown into a broader codebase for studying CLIP-guided synthetic sample selection strategies, including margin-based selection, CCDS, anchored CCDS, confusion-adaptive CCDS, and real-feature diversity variants.
 
-The current strongest result is obtained on a 20-class subset of Oxford-IIIT Pets under a 5-shot setting. The best 3-seed mean accuracy is **90.93%**.
+The current strongest verified result is obtained on a 20-class subset of Oxford-IIIT Pets under a 5-shot setting. Importantly, this best result is achieved by the `margin_topk` large-candidate configuration with real-only fine-tuning, not by the original CCDS variant. The best 3-seed mean accuracy is **90.93%**.
 
 ## Highlights
 
 - Implements an end-to-end few-shot augmentation workflow: split creation, diffusion candidate generation, CLIP scoring, candidate selection, classifier training, and result summarization.
+- Treats CCDS as one member of a broader selection-method family rather than as the sole final method.
 - Supports multiple selection strategies, including `random`, `clip_topk`, `margin_topk`, `ccds`, `anchored_ccds`, `confusion_adaptive_ccds`, and `cfrd_mmr`.
 - Provides reproducible configuration files for Flowers20 and Pets20 experiments.
-- Archives the current best Pets20 5-shot result with lightweight summary tables committed to the repository.
+- Archives the current best Pets20 5-shot result from `margin_topk` large-candidate selection with lightweight summary tables committed to the repository.
 - Keeps large generated images, model checkpoints, embeddings, and full result artifacts out of Git by default.
 
 ## Method Overview
 
-CCDS is designed around the observation that not every diffusion-generated image is useful for few-shot classifier training. The pipeline therefore separates generation from selection:
+The project is built around the observation that not every diffusion-generated image is useful for few-shot classifier training. It therefore separates generation from selection and evaluates several selection rules under the same training pipeline:
 
 1. **Candidate generation.** Stable Diffusion v1.5 produces multiple class-conditioned images for each target class.
 2. **Semantic scoring.** CLIP text-image similarity is used to compute:
    - target-class score,
    - strongest non-target confuser score,
    - class-consistency margin.
-3. **Candidate selection.** Different strategies select synthetic samples from the candidate pool. The current best configuration uses `margin_topk`, which selects candidates with the strongest target-vs-confuser margin.
+3. **Candidate selection.** Different strategies select synthetic samples from the candidate pool. CCDS combines class-consistency and diversity, while the current best configuration uses `margin_topk`, which selects candidates with the strongest target-vs-confuser margin from a larger candidate pool.
 4. **Classifier evaluation.** A ResNet-50 classifier with an ImageNet-pretrained frozen backbone is trained on the real few-shot set plus selected synthetic samples. The best setting uses an additional real-only fine-tuning stage.
 
 ## Current Best Result
@@ -232,6 +233,8 @@ The repository is intended to stay lightweight and reproducible. Therefore:
 This policy avoids pushing large binary artifacts while still preserving the code, configuration, and numerical summary needed to understand and reproduce the reported result.
 
 ## Notes on Interpretation
+
+The repository name and historical documentation still use CCDS because the project started from CLIP Class-Consistency and Diversity Selection. In the current codebase, however, CCDS should be read as part of a broader family of CLIP-guided diffusion sample selection methods. The best verified Pets20 result reported here is specifically the `margin_topk` large-candidate setting with real-only fine-tuning, not the original CCDS method.
 
 The current best result is a 3-seed empirical result on a Pets20 5-shot subset. It should be treated as an experimental result for a specific configuration, not as a general claim across all datasets or backbones. The comparison table includes both complete 3-seed settings and one single-seed diagnostic result; the latter is marked accordingly.
 
