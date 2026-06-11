@@ -1,134 +1,168 @@
-# CCDS: CLIP Class-Consistency and Diversity Selection for Few-shot Classification
+# CCDS: CLIP-Guided Selection of Diffusion Samples for Few-Shot Image Classification
 
-## 当前最佳结果（2026-06-11）
+This repository contains a research-oriented implementation of a diffusion-based data augmentation pipeline for few-shot image classification. The project studies how generated images should be selected before they are added to a low-shot training set. The main pipeline generates class-conditioned images with Stable Diffusion, scores the generated candidates with CLIP, selects synthetic samples using several confidence/diversity criteria, and evaluates them with a frozen-backbone ResNet-50 classifier.
 
-当前正式整理版本以本 worktree 为准：
+The current strongest result is obtained on a 20-class subset of Oxford-IIIT Pets under a 5-shot setting. The best 3-seed mean accuracy is **90.93%**.
+
+## Highlights
+
+- Implements an end-to-end few-shot augmentation workflow: split creation, diffusion candidate generation, CLIP scoring, candidate selection, classifier training, and result summarization.
+- Supports multiple selection strategies, including `random`, `clip_topk`, `margin_topk`, `ccds`, `anchored_ccds`, `confusion_adaptive_ccds`, and `cfrd_mmr`.
+- Provides reproducible configuration files for Flowers20 and Pets20 experiments.
+- Archives the current best Pets20 5-shot result with lightweight summary tables committed to the repository.
+- Keeps large generated images, model checkpoints, embeddings, and full result artifacts out of Git by default.
+
+## Method Overview
+
+CCDS is designed around the observation that not every diffusion-generated image is useful for few-shot classifier training. The pipeline therefore separates generation from selection:
+
+1. **Candidate generation.** Stable Diffusion v1.5 produces multiple class-conditioned images for each target class.
+2. **Semantic scoring.** CLIP text-image similarity is used to compute:
+   - target-class score,
+   - strongest non-target confuser score,
+   - class-consistency margin.
+3. **Candidate selection.** Different strategies select synthetic samples from the candidate pool. The current best configuration uses `margin_topk`, which selects candidates with the strongest target-vs-confuser margin.
+4. **Classifier evaluation.** A ResNet-50 classifier with an ImageNet-pretrained frozen backbone is trained on the real few-shot set plus selected synthetic samples. The best setting uses an additional real-only fine-tuning stage.
+
+## Current Best Result
+
+The best verified setting is:
+
+| Item | Value |
+|---|---|
+| Dataset | Oxford-IIIT Pets20 |
+| Task | 20-way 5-shot classification |
+| Project name | `ccds_pets20_160_sp80_core_realft` |
+| Selection method | `margin_topk` |
+| Generated candidates | 160 per class |
+| Selected synthetic samples | 80 per class |
+| Classifier | ResNet-50, frozen backbone |
+| Training | 30 epochs real+synthetic + 5 epochs real-only fine-tuning |
+| Config | `configs/sweeps/pets20_160_sp80_core_realft.yaml` |
+
+### Aggregate Result
+
+| Setting | Method | Seeds | Accuracy mean | Accuracy std | Macro F1 mean | Macro F1 std |
+|---|---|---:|---:|---:|---:|---:|
+| Pets20 160/sp80 + RealFT | `margin_topk` | 3 | **0.9093** | 0.0023 | **0.9087** | 0.0019 |
+
+### Per-Seed Result
+
+| Seed | Accuracy | Macro F1 | Best val accuracy | Train size | Test size |
+|---:|---:|---:|---:|---:|---:|
+| 0 | 0.9107 | 0.9098 | 0.9150 | 1700 | 1981 |
+| 1 | 0.9066 | 0.9065 | 0.9250 | 1700 | 1981 |
+| 2 | 0.9107 | 0.9098 | 0.9000 | 1700 | 1981 |
+
+### Comparison with Representative Baselines
+
+| Setting | Method | Selected/class | Seeds | Accuracy mean | Macro F1 mean | Delta acc. vs best |
+|---|---|---:|---:|---:|---:|---:|
+| Pets20 fair RealFT | `real_only` | 0 | 3 | 0.8127 | 0.8064 | -0.0966 |
+| Pets20 fair RealFT | `traditional_aug` | 0 | 3 | 0.8048 | 0.7974 | -0.1045 |
+| Pets20 fair RealFT | `diffusion_random` | 10 | 3 | 0.8713 | 0.8694 | -0.0380 |
+| Pets20 fair RealFT | `clip_topk` | 10 | 3 | 0.8992 | 0.8982 | -0.0101 |
+| Pets20 fair RealFT | `anchored_ccds` | 10 | 3 | 0.8957 | 0.8946 | -0.0136 |
+| Pets20 D7 anchored + RealFT | `anchored_ccds` | 10 | 3 | 0.8999 | 0.8993 | -0.0094 |
+| Pets20 160/sp60 + RealFT | `ccds` | 60 | 3 | 0.9073 | 0.9066 | -0.0020 |
+| Pets20 160/sp80 + RealFT | `margin_topk` | 80 | 3 | **0.9093** | **0.9087** | 0.0000 |
+| Pets20 160/sp100 + RealFT | `margin_topk` | 100 | 3 | 0.8984 | 0.8978 | -0.0109 |
+| Pets20 160/sp100 + RealFT | `anchored_ccds` | 100 | 3 | 0.9039 | 0.9032 | -0.0054 |
+| Pets20 160/sp80 + RealFT | `cfrd_mmr` | 80 | 1 | 0.9051 | 0.9045 | -0.0042 |
+
+The committed lightweight result files are located under:
 
 ```text
-/root/clip_diffusion_fewshot_ccds/.claude/worktrees/anchored-ccds-results
+results/research_process/
+├── pets20_160_sp80_core_realft_best_summary.csv
+├── pets20_160_sp80_core_realft_per_seed.csv
+├── pets20_160_sp80_core_realft_vs_baselines.csv
+├── pets20_160_sp80_core_realft_tables.md
+└── pets20_160_sp80_core_realft_verification.txt
 ```
 
-全项目最可信主结果已经更新为 Pets20 large-synthetic 设置：
+Large artifacts such as full generated images, CLIP embeddings, classifier checkpoints, and complete training outputs are intentionally not committed.
 
-| item | value |
-|---|---|
-| dataset | Oxford-IIIT Pets20, 20-way 5-shot |
-| project | `ccds_pets20_160_sp80_core_realft` |
-| method | `margin_topk` |
-| candidates/class | 160 |
-| selected/class | 80 |
-| classifier | frozen-backbone ResNet-50 |
-| training | 30 epochs real+synthetic + 5 epochs RealFT |
-| accuracy mean | **0.9093050648** |
-| macro F1 mean | **0.9086824557** |
+## Reproducing the Best Result Summary
 
-关键证据与轻量复查入口：
+The default reproduction command is intentionally lightweight. It checks existing artifacts and regenerates summary tables; it does **not** rerun Stable Diffusion generation, CLIP scoring, or the full 30+5 epoch classifier training.
 
 ```bash
-# 验证已有 artifacts，并重新生成最终汇总表；默认不重训、不重生成
 bash scripts/reproduce_best_pets20_margin_topk.sh
-
-# 单独验证 artifacts
-PYTHONPATH=src /root/clip_diffusion_fewshot_ccds/.venv/bin/python scripts/verify_best_pets20_artifacts.py --write-report
-
-# 单独生成 summary/per-seed/vs-baselines 表
-PYTHONPATH=src /root/clip_diffusion_fewshot_ccds/.venv/bin/python scripts/summarize_best_pets20_results.py
 ```
 
-详细交付摘要见 `docs/最终结果摘要.md`。历史 Flowers20 / Anchored CCDS / CFRD-MMR 结果仍保留为研究过程和消融证据，但不再是当前最终最强主结果。
-
-
-本项目实现一个面向小样本图像分类的扩散生成增强流程：使用 Stable Diffusion 生成类别候选图像，使用 CLIP 计算类别一致性 margin，并结合多样性筛选选择更适合分类训练的生成样本。
-
-## 项目目标
-
-- 在 Oxford Flowers102 子集上构建 few-shot 分类任务；
-- 使用 Stable Diffusion v1.5 生成每类候选样本；
-- 实现 CLIP Target Score、Confuser Score、Class-Consistency Margin；
-- 实现 Random、CLIP Top-K、Margin Top-K、CCDS、Anchored CCDS、Confusion-Adaptive CCDS 等生成样本筛选策略；
-- 使用 ResNet-50 frozen backbone 进行分类评估；
-- 输出主实验、消融实验和可视化结果。
-
-## 当前新增策略
-
-- `cfrd_mmr`：CLIP-Filtered Real-feature Diverse Selection。CLIP 只做 top-M 语义过滤，最终用真实 few-shot ResNet50 特征接近度和 MMR 类内多样性选样。详见 `docs/cfrd_mmr_strategy.md`。
-
-## 推荐实验设置
+Expected verification summary:
 
 ```text
-数据集：Oxford Flowers102
-类别数：20 类主实验，10 类保底
-shot：5-shot 主实验，可补 1-shot
-候选生成：每类 80 张
-最终筛选：每类 10 张
-扩散模型：runwayml/stable-diffusion-v1-5
-CLIP：open_clip ViT-B/32
-分类器：ImageNet pretrained ResNet-50 frozen backbone
+Verification: PASS
+accuracy_mean=0.9093050648
+macro_f1_mean=0.9086824557
 ```
 
-## 目录结构
+To run the individual steps:
+
+```bash
+# Verify that the required artifacts exist and match the expected result.
+PYTHONPATH=src /root/clip_diffusion_fewshot_ccds/.venv/bin/python \
+  scripts/verify_best_pets20_artifacts.py --write-report
+
+# Regenerate compact summary tables.
+PYTHONPATH=src /root/clip_diffusion_fewshot_ccds/.venv/bin/python \
+  scripts/summarize_best_pets20_results.py
+```
+
+To rerun the three classifier training seeds for the best setting, explicitly opt in to the heavier run:
+
+```bash
+RUN_HEAVY=1 bash scripts/reproduce_best_pets20_margin_topk.sh
+```
+
+Full regeneration of diffusion candidates and CLIP scores is heavier still and should be launched manually only when needed.
+
+## Installation
+
+```bash
+pip install -r requirements.txt
+```
+
+The project is script-based. Most commands should be run from the repository root with `PYTHONPATH=src` when importing the local `ccds` package directly.
+
+A frozen environment snapshot from the known working virtual environment is provided in:
+
+```text
+requirements-lock.txt
+```
+
+GPU/CUDA binary compatibility still depends on the host driver and platform.
+
+## Repository Structure
 
 ```text
 clip_diffusion_fewshot_ccds/
-├── configs/              # 实验配置
-├── data/
-│   ├── raw/              # 原始数据或下载缓存说明
-│   └── splits/           # few-shot 划分文件
-├── generated/            # 扩散生成图像
-├── scripts/              # 命令行入口脚本
-├── src/ccds/             # 核心 Python 包
-├── results/              # CSV、JSON、训练结果
-├── figures/              # 可视化图片
-├── docs/                 # 项目报告和说明文档
-└── notebooks/            # 可选分析 notebook
+├── configs/                  # Experiment configurations and sweeps
+├── data/splits/              # Lightweight few-shot split CSVs committed for reproducibility
+├── docs/                     # Research notes, handoff summaries, and method documentation
+├── figures/                  # Selected lightweight figures for reporting
+├── results/research_process/ # Small committed summary tables for the best result
+├── scripts/                  # Command-line entry points
+├── src/ccds/                 # Core implementation
+└── tests/                    # Unit tests for data, metrics, and selection utilities
 ```
 
-## 推荐执行顺序
+Important implementation files:
 
-1. 准备环境；
-2. 创建 few-shot 划分；
-3. 训练 Real Only / Traditional Augmentation baseline；
-4. 批量生成扩散候选图像；
-5. 计算 CLIP 分数和 margin；
-6. 生成筛选列表；
-7. 训练各增强策略分类器；
-8. 汇总结果和可视化。
+- `src/ccds/selection.py`: selection strategies, including margin-based, CCDS, anchored, and adaptive variants.
+- `src/ccds/clip_scoring.py`: CLIP feature extraction and target/confuser/margin scoring.
+- `src/ccds/diffusion.py`: Stable Diffusion candidate generation wrapper.
+- `src/ccds/data.py`: CSV-backed dataset construction and real/synthetic train-set merging.
+- `src/ccds/pets.py`: Oxford-IIIT Pets split construction.
+- `scripts/train_classifier.py`: frozen-backbone ResNet-50 training and evaluation.
 
-## 初始命令草案
+## Common Workflows
 
-```bash
-# 1. 创建环境后安装依赖
-pip install -r requirements.txt
+### Quick Engineering Smoke Test
 
-# 2. 创建 few-shot split
-python scripts/make_splits.py --config configs/flowers20_5shot.yaml
-
-# 3. 训练 baseline
-python scripts/train_classifier.py --config configs/flowers20_5shot.yaml --method real_only
-python scripts/train_classifier.py --config configs/flowers20_5shot.yaml --method traditional_aug
-
-# 4. 生成扩散候选图像
-python scripts/generate_candidates.py --config configs/flowers20_5shot.yaml
-
-# 5. CLIP 打分
-python scripts/score_candidates.py --config configs/flowers20_5shot.yaml
-
-# 6. 筛选生成样本
-python scripts/select_candidates.py --config configs/flowers20_5shot.yaml --strategy ccds
-python scripts/select_candidates.py --config configs/sweeps/pets20_ca2_adaptive_m6_M8_top50_w702010.yaml --strategy confusion_adaptive_ccds
-python scripts/select_candidates.py --config configs/sweeps/pets20_cfrd_mmr_top60_resnet.yaml --strategy cfrd_mmr --prototype-seed 0
-
-# 7. 训练增强方法
-python scripts/train_classifier.py --config configs/flowers20_5shot.yaml --method ccds
-python scripts/train_classifier.py --config configs/sweeps/pets20_ca2_adaptive_m6_M8_top50_w702010.yaml --method confusion_adaptive_ccds --seed 0
-python scripts/train_classifier.py --config configs/sweeps/pets20_cfrd_mmr_top60_resnet.yaml --method cfrd_mmr --seed 0
-```
-
-## 当前阶段
-
-当前仓库已经包含可运行的主流程脚本：数据集划分、baseline 训练、扩散候选生成、CLIP 打分、候选筛选、增强训练和结果绘图。
-
-建议先用无扩散 smoke 配置验证工程链路：
+Use a no-diffusion smoke configuration to verify the pipeline logic without downloading or running Stable Diffusion:
 
 ```bash
 python scripts/run_quick_pipeline.py \
@@ -138,38 +172,69 @@ python scripts/run_quick_pipeline.py \
   --seed 0
 ```
 
-该命令使用 Flowers102 held-out 图片模拟生成候选，避免第一次验证时下载和运行 Stable Diffusion。通过后再按 `docs/运行指南.md` 跑正式 20 类实验。
+### Create Few-Shot Splits
 
-结果现在按 `project_name` 隔离在 `results/<project_name>/` 下，分类器汇总保存在 `results/classifier/all_results.csv`，聚合表保存在 `results/classifier/summary_by_method.csv`。
-
-`confusion_adaptive_ccds`（CA-CCDS）是 `anchored_ccds` 的类别自适应版本：先按每类 CLIP Top-K 的平均 margin 估计类别难度，低 margin 的混淆/困难类别保留更少 CLIP anchor、替换更多样本；高 margin 的容易类别保留更多 CLIP Top-K anchor。因此它实际是在按类别自适应控制与 `clip_topk` 的 overlap。
-
-## 已完成实验摘要
-
-已完成 `configs/flowers20_5shot.yaml` 下的 Flowers20 5-shot 实验：
-
-```text
-20 类 × 每类 80 张扩散候选图 = 1600 张生成图
-每类选择 10 张生成图用于增强
-7 种方法 × 3 个随机种子 × 20 epoch
+```bash
+python scripts/make_splits.py --config configs/pets20_5shot.yaml
 ```
 
-3 个随机种子的聚合结果如下：
+### Generate Candidates
 
-| method | accuracy mean | accuracy std | macro F1 mean | macro F1 std |
-|---|---:|---:|---:|---:|
-| real_only | 0.8344 | 0.0069 | 0.8031 | 0.0142 |
-| traditional_aug | 0.8269 | 0.0176 | 0.7993 | 0.0290 |
-| diffusion_random | 0.8561 | 0.0073 | 0.8206 | 0.0077 |
-| clip_topk | 0.8614 | 0.0125 | 0.8284 | 0.0106 |
-| margin_topk | 0.8433 | 0.0054 | 0.8103 | 0.0068 |
-| ccds | 0.8508 | 0.0038 | 0.8207 | 0.0047 |
-| anchored_ccds | 0.8667 | 0.0114 | 0.8313 | 0.0186 |
-
-结论：扩散增强整体优于 `real_only` 和 `traditional_aug`；新增 `anchored_ccds` 在保留每类 7 张 CLIP Top-K 高置信 anchor 的基础上，用质量-多样性重排序补齐样本，当前 3-seed 平均 Accuracy 达到 0.8667，超过原强 baseline `clip_topk` 的 0.8614。完整 overnight 实验报告保存在本地结果快照：
-
-```text
-results/overnight_runs/paid_overnight_20260601_stage80_resume/stage_80cand_20epoch/experiment_summary.md
+```bash
+python scripts/generate_candidates.py --config configs/pets20_5shot.yaml
 ```
 
-注意：`generated/`、`results/`、`logs/`、checkpoint 和 embedding 文件默认不提交到 GitHub。
+### Score Candidates with CLIP
+
+```bash
+python scripts/score_candidates.py --config configs/pets20_5shot.yaml
+```
+
+### Select Synthetic Samples
+
+```bash
+python scripts/select_candidates.py \
+  --config configs/sweeps/pets20_160_sp80_core_realft.yaml \
+  --strategy margin_topk
+```
+
+### Train a Classifier
+
+```bash
+python scripts/train_classifier.py \
+  --config configs/sweeps/pets20_160_sp80_core_realft.yaml \
+  --method margin_topk \
+  --seed 0
+```
+
+## Tests
+
+```bash
+PYTHONPATH=/root/clip_diffusion_fewshot_ccds/src \
+  /root/clip_diffusion_fewshot_ccds/.venv/bin/python -m pytest tests
+```
+
+Current checked test status:
+
+```text
+15 passed
+```
+
+## Artifact and Version-Control Policy
+
+The repository is intended to stay lightweight and reproducible. Therefore:
+
+- Committed: source code, experiment configs, few-shot split CSVs, documentation, selected figures, and compact result summary tables.
+- Not committed by default: `generated/`, full `results/`, CLIP embeddings, model checkpoints, logs, and raw datasets.
+- Best-result classifier metrics and checkpoints used for verification are stored locally under `/root/gpufree-data/clip_diffusion_fewshot_ccds_results/`.
+- The lightweight verification script checks these local artifacts when available.
+
+This policy avoids pushing large binary artifacts while still preserving the code, configuration, and numerical summary needed to understand and reproduce the reported result.
+
+## Notes on Interpretation
+
+The current best result is a 3-seed empirical result on a Pets20 5-shot subset. It should be treated as an experimental result for a specific configuration, not as a general claim across all datasets or backbones. The comparison table includes both complete 3-seed settings and one single-seed diagnostic result; the latter is marked accordingly.
+
+## License and Citation
+
+No formal paper citation is currently provided. If this repository is used in a report or derivative project, cite the repository and the exact configuration file used for the reported experiment.

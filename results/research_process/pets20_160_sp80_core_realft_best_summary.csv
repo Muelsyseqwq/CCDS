@@ -1,0 +1,2 @@
+setting,project_name,method,num_seeds,num_classes,shot,candidates_per_class,selected_per_class,epochs,real_finetune_epochs,real_finetune_lr,accuracy_mean,accuracy_std,macro_f1_mean,macro_f1_std,best_val_accuracy_mean,train_size,real_finetune_size,test_size,config_path
+Pets20 160/sp80 margin_topk + RealFT (best),ccds_pets20_160_sp80_core_realft,margin_topk,3,20,5,160,80,30,5,0.0001,0.9093050647820965,0.0023315508094483056,0.9086824557438358,0.001925901304010054,0.9133333333333334,1700,100,1981,configs/sweeps/pets20_160_sp80_core_realft.yaml

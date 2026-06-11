@@ -1,0 +1,48 @@
+# Best Pets20 result artifact verification
+
+Project: ccds_pets20_160_sp80_core_realft
+Method: margin_topk
+Config: configs/sweeps/pets20_160_sp80_core_realft.yaml
+Classifier root: /root/gpufree-data/clip_diffusion_fewshot_ccds_results/classifier
+
+OK config: /root/clip_diffusion_fewshot_ccds/configs/sweeps/pets20_160_sp80_core_realft.yaml
+OK generation metadata: /root/clip_diffusion_fewshot_ccds/results/ccds_pets20_160/generation_metadata.csv
+OK generation metadata rows=3200
+OK CLIP scores: /root/clip_diffusion_fewshot_ccds/results/ccds_pets20_160/clip_scores.csv
+OK CLIP scores rows=3200
+OK CLIP embeddings: /root/clip_diffusion_fewshot_ccds/results/ccds_pets20_160/clip_image_embeddings.npz
+OK selected margin_topk: /root/clip_diffusion_fewshot_ccds/results/ccds_pets20_160_sp80_core_realft/selected/selected_margin_topk.csv
+OK selected margin_topk rows=1600
+OK split seed0 train: /root/clip_diffusion_fewshot_ccds/data/splits/pets20_5shot_seed0_train.csv
+OK split seed0 val: /root/clip_diffusion_fewshot_ccds/data/splits/pets20_5shot_seed0_val.csv
+OK split seed0 test: /root/clip_diffusion_fewshot_ccds/data/splits/pets20_5shot_seed0_test.csv
+OK merged train seed0: /root/clip_diffusion_fewshot_ccds/results/merged_train/pets20_5shot_seed0_ccds_pets20_160_sp80_core_realft_margin_topk.csv
+OK merged train seed0 rows=1700
+OK metrics seed0: /root/gpufree-data/clip_diffusion_fewshot_ccds_results/classifier/ccds_pets20_160_sp80_core_realft/margin_topk/seed0/metrics.json
+OK model checkpoint seed0: /root/gpufree-data/clip_diffusion_fewshot_ccds_results/classifier/ccds_pets20_160_sp80_core_realft/margin_topk/seed0/model.pt
+OK summary seed0: /root/gpufree-data/clip_diffusion_fewshot_ccds_results/classifier/ccds_pets20_160_sp80_core_realft/margin_topk/seed0/summary.csv
+OK summary seed0 rows=1
+OK split seed1 train: /root/clip_diffusion_fewshot_ccds/data/splits/pets20_5shot_seed1_train.csv
+OK split seed1 val: /root/clip_diffusion_fewshot_ccds/data/splits/pets20_5shot_seed1_val.csv
+OK split seed1 test: /root/clip_diffusion_fewshot_ccds/data/splits/pets20_5shot_seed1_test.csv
+OK merged train seed1: /root/clip_diffusion_fewshot_ccds/results/merged_train/pets20_5shot_seed1_ccds_pets20_160_sp80_core_realft_margin_topk.csv
+OK merged train seed1 rows=1700
+OK metrics seed1: /root/gpufree-data/clip_diffusion_fewshot_ccds_results/classifier/ccds_pets20_160_sp80_core_realft/margin_topk/seed1/metrics.json
+OK model checkpoint seed1: /root/gpufree-data/clip_diffusion_fewshot_ccds_results/classifier/ccds_pets20_160_sp80_core_realft/margin_topk/seed1/model.pt
+OK summary seed1: /root/gpufree-data/clip_diffusion_fewshot_ccds_results/classifier/ccds_pets20_160_sp80_core_realft/margin_topk/seed1/summary.csv
+OK summary seed1 rows=1
+OK split seed2 train: /root/clip_diffusion_fewshot_ccds/data/splits/pets20_5shot_seed2_train.csv
+OK split seed2 val: /root/clip_diffusion_fewshot_ccds/data/splits/pets20_5shot_seed2_val.csv
+OK split seed2 test: /root/clip_diffusion_fewshot_ccds/data/splits/pets20_5shot_seed2_test.csv
+OK merged train seed2: /root/clip_diffusion_fewshot_ccds/results/merged_train/pets20_5shot_seed2_ccds_pets20_160_sp80_core_realft_margin_topk.csv
+OK merged train seed2 rows=1700
+OK metrics seed2: /root/gpufree-data/clip_diffusion_fewshot_ccds_results/classifier/ccds_pets20_160_sp80_core_realft/margin_topk/seed2/metrics.json
+OK model checkpoint seed2: /root/gpufree-data/clip_diffusion_fewshot_ccds_results/classifier/ccds_pets20_160_sp80_core_realft/margin_topk/seed2/model.pt
+OK summary seed2: /root/gpufree-data/clip_diffusion_fewshot_ccds_results/classifier/ccds_pets20_160_sp80_core_realft/margin_topk/seed2/summary.csv
+OK summary seed2 rows=1
+seed summaries accuracy_mean=0.9093050648, macro_f1_mean=0.9086824557
+OK classifier all_results: /root/gpufree-data/clip_diffusion_fewshot_ccds_results/classifier/all_results.csv
+OK classifier all_results rows=179
+all_results accuracy_mean=0.9093050648, macro_f1_mean=0.9086824557
+
+Verification: PASS
